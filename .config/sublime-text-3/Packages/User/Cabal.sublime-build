@@ -1,0 +1,7 @@
+{
+    // append lib:myPackage or myexecutable here to only build certain cabal targets
+    "cmd": ["~/.cabal/bin/cabal build --ghc-options='-O0 -hidir o0 -odir o0'"],
+    "shell": true,
+    // this matches the output of ghc
+    "file_regex": "^(\\S*?):(\\d+):(\\d+):$"
+}

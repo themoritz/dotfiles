@@ -1,0 +1,7 @@
+XTerm*faceName: Bitstream Vera Serif Mono
+xterm*faceSize: 9
+xterm*saveLines: 16384
+xterm*loginShell: true
+xterm*termName: xterm-color
+xterm*eightBitInput: false
+

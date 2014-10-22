@@ -1,0 +1,17 @@
+{
+	"auto_complete_commit_on_tab": true,
+	"auto_find_in_selection": true,
+	"color_scheme": "Packages/Color Scheme - Default/Monokai.tmTheme",
+	"ensure_newline_at_eof_on_save": true,
+	"font_size": 10,
+	"hot_exit": false,
+	"ignored_packages":
+	[
+	],
+	"indent_to_bracket": true,
+	"remember_open_files": false,
+	"shift_tab_unindent": true,
+	"translate_tabs_to_spaces": true,
+	"trim_trailing_white_space_on_save": true,
+	"vintage_start_in_command_mode": true
+}

@@ -1,0 +1,8 @@
+{
+    "enable_hdevtools": false,
+    "inhibit_completions": true,
+    "auto_completion_popup": true,
+    // Using ctrl+b to build (build system "Cabal")
+    "auto_build_mode": "typecheck-then-warnings",
+    "cache_path": "/home/mdrexl/.cache/sublimetext",
+}
