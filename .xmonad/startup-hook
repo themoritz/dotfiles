@@ -27,3 +27,5 @@ fi
 
 # Dropbox
 dropbox start &
+
+setxkbmap -option grp:alt_shift_toggle us,de
