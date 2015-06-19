@@ -1,0 +1,7 @@
+[
+	{ "keys": ["pageup"], "command": "scroll_lines", "args": {"amount": 20.0} },
+	{ "keys": ["pagedown"], "command": "scroll_lines", "args": {"amount": -20.0} },
+
+	{ "keys": ["ctrl+up"], "command": "select_lines", "args": {"forward": false} },
+	{ "keys": ["ctrl+down"], "command": "select_lines", "args": {"forward": true} },
+]
