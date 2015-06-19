@@ -1,5 +1,5 @@
 ## Deploy
 
-    git clone git@git.mdrexl.de/dotfiles.git
-    cd dotfiles
-    bash deploy.sh
+    cd ~
+    git clone ssh://git@gitlab.mdrexl.net:10022/mdrexl/dotfiles.git
+    ln -s dotfiles/.vimrc .

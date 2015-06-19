@@ -18,10 +18,10 @@ set lazyredraw                        " do not redraw while running macros
 set backspace=indent,eol,start        " make backspace a more flexible
 
 set backup                            " make backup files
-set backupdir=~/.vim/backup           " where to put backup files
+set backupdir=~/.backup/vim           " where to put backup files
 
 set clipboard+=unnamed                " share windows clipboard
-set directory=~/.vim/tmp              " directory to place swap files in
+set directory=~/.backup/vim           " directory to place swap files in
 set fileformats=unix,dos,mac          " support all three, in this order
 set iskeyword+=_,$,@,%,#,:            " none of these are word dividers
 set mouse=a                           " use mouse everywhere
