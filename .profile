@@ -36,5 +36,8 @@ if [ -e "/usr/local/bin/virtualenvwrapper.sh" ]; then
     source /usr/local/bin/virtualenvwrapper.sh
 fi
 
+# Disable console beeps
+xset b off
+
 # start X server
 pgrep 'tmux|startx' || startx
