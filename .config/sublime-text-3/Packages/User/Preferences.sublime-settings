@@ -3,13 +3,13 @@
 	"auto_find_in_selection": true,
 	"color_scheme": "Packages/Color Scheme - Default/Monokai.tmTheme",
 	"ensure_newline_at_eof_on_save": true,
-	"font_size": 10,
+	"font_size": 11,
 	"hot_exit": false,
 	"ignored_packages":
 	[
-		"Emmet",
+		"ReactJS",
 		"LESS",
-		"ReactJS"
+		"Emmet"
 	],
 	"indent_to_bracket": true,
 	"remember_open_files": false,

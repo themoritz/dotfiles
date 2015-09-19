@@ -1,5 +1,5 @@
 XTerm*faceName: Bitstream Vera Serif Mono
-XTerm*faceSize: 10
+XTerm*faceSize: 12
 XTerm*saveLines: 16384
 XTerm*utf8: 1
 XTerm*renderFont: true

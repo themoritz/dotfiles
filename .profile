@@ -21,6 +21,10 @@ if [ -d "$HOME/bin" ] ; then
     export PATH="$HOME/bin:$PATH"
 fi
 
+if [ -d "$HOME/.local/bin" ] ; then
+    export PATH="$HOME/.local/bin:$PATH"
+fi
+
 # Haskell
 if [ -d "$HOME/.cabal" ] ; then
     export PATH="$HOME/.cabal/bin:$HOME/bin/ghc/bin:$PATH"
@@ -31,3 +35,6 @@ if [ -e "/usr/local/bin/virtualenvwrapper.sh" ]; then
     export WORKON_HOME="$HOME/.virtualenvs"
     source /usr/local/bin/virtualenvwrapper.sh
 fi
+
+# start X server
+pgrep 'tmux|startx' || startx
