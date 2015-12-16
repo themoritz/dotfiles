@@ -25,11 +25,6 @@ if [ -d "$HOME/.local/bin" ] ; then
     export PATH="$HOME/.local/bin:$PATH"
 fi
 
-# Haskell
-if [ -d "$HOME/.cabal" ] ; then
-    export PATH="$HOME/.cabal/bin:$HOME/bin/ghc/bin:$PATH"
-fi
-
 # Virtualenv
 if [ -e "/usr/local/bin/virtualenvwrapper.sh" ]; then
     export WORKON_HOME="$HOME/.virtualenvs"

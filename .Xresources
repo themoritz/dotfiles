@@ -5,3 +5,4 @@ XTerm*utf8: 1
 XTerm*renderFont: true
 *background: rgb:00/00/00
 *foreground: rgb:ff/ff/ff
+*.dpi: 100
