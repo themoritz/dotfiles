@@ -31,8 +31,9 @@ if [ -e "/usr/local/bin/virtualenvwrapper.sh" ]; then
     source /usr/local/bin/virtualenvwrapper.sh
 fi
 
-# Disable console beeps
-xset b off
+# Go
+export GOPATH=$HOME/go
+export PATH="$HOME/go/bin:/usr/local/go/bin:$PATH"
 
 # start X server
 pgrep 'tmux|startx' || startx
