@@ -390,6 +390,7 @@ client.add_signal("focus", function(c) c.border_color = beautiful.border_focus e
 client.add_signal("unfocus", function(c) c.border_color = beautiful.border_normal end)
 -- }}}
 
+os.execute("killall nm-applet")
 awful.util.spawn_with_shell("nm-applet")
 os.execute("xset b off")
 os.execute("dropbox start")
