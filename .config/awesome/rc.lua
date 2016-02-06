@@ -12,10 +12,26 @@ require("debian.menu")
 
 vicious = require("vicious")
 
+-- memory widget
 memwidget = widget({ type = "textbox" })
 vicious.register(memwidget, vicious.widgets.mem, "$1% of $3MB", 13)
 sepwidget = widget({ type = "textbox", align = "right" })
 sepwidget.text = " | "
+
+-- battery widget
+function GetBatteryState()
+  local command = "acpi -b |sed -e 's@.*\\([0-9]:\\) [^,]*,@\\1@' -e 's@remaining@@' | sed -e :a -e '$!N;s@\\n@| @;ta'"
+  local fh = assert(io.popen(command, "r"))
+  local text = " " .. fh:read("*l") .. " "
+  fh:close()
+  return text
+end
+
+batterywidget = widget({ type = "textbox" })
+batterywidget.text = GetBatteryState()
+batterywidgettimer = timer({ timeout = 60 })
+batterywidgettimer:add_signal("timeout", function() batterywidget.text = GetBatteryState() end)
+batterywidgettimer:start()
 
 -- {{{ Error handling
 -- Check if awesome encountered an error during startup and fell back to
@@ -187,6 +203,9 @@ for s = 1, screen.count() do
         },
         mylayoutbox[s],
         mytextclock,
+        sepwidget,
+        batterywidget,
+        sepwidget,
         memwidget,
         sepwidget,
         s == 1 and mysystray or nil,
