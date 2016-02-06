@@ -35,11 +35,5 @@ fi
 export GOPATH=$HOME/go
 export PATH="$HOME/go/bin:/usr/local/go/bin:$PATH"
 
-# start X server
-if [[ -z "$DISPLAY" ]] && [[ $(tty) = /dev/tty1 ]]; then
- . startx
- logout
-fi
-
 # nix
 if [ -e /home/moritz/.nix-profile/etc/profile.d/nix.sh ]; then . /home/moritz/.nix-profile/etc/profile.d/nix.sh; fi # added by Nix installer
