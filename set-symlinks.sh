@@ -1,5 +1,11 @@
+cd
+ln -s dotfiles/.Xresources .
+ln -s dotfiles/.zshrc .
+ln -s dotfiles/.profile .
+ln -s dotfiles/.vimrc .
+ln -s dotfiles/.vim .
+ln -s dotfiles/.gitconfig .
+ln -s dotfiles/.bashrc .
 
-
-# SUblime
-cd ~/.config/sublime-text-3/Packages/User
-ln -s ~/dotfiles/.config/sublime-text-3/Packages/User/* .
+cd .config
+ln -s ../dotfiles/.config/awesome/ .
