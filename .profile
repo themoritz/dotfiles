@@ -37,3 +37,7 @@ export PATH="$HOME/go/bin:/usr/local/go/bin:$PATH"
 
 # nix
 if [ -e /home/moritz/.nix-profile/etc/profile.d/nix.sh ]; then . /home/moritz/.nix-profile/etc/profile.d/nix.sh; fi # added by Nix installer
+
+export PATH="$PATH:$HOME/.rvm/bin" # Add RVM to PATH for scripting
+
+[[ -s "$HOME/.rvm/scripts/rvm" ]] && source "$HOME/.rvm/scripts/rvm" # Load RVM into a shell session *as a function*

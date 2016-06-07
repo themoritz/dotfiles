@@ -133,3 +133,5 @@ fi
 export PS1="\[\e[0;32m\][\u \W]\$\[\e[m\] "
 
 source $HOME/.profile
+
+export PATH="$PATH:$HOME/.rvm/bin" # Add RVM to PATH for scripting

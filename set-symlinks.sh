@@ -9,3 +9,8 @@ ln -s dotfiles/.bashrc .
 
 cd .config
 ln -s ../dotfiles/.config/awesome/ .
+
+cd
+mkdir -p .emacs.d/personal
+cd .emacs.d/personal
+ln -s ../../dotfiles/.emacs.d/personal/init.el .
