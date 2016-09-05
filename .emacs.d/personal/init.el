@@ -24,7 +24,7 @@
 ;; (require 'prelude-erlang)
 ;; (require 'prelude-elixir)
 ;; (require 'prelude-go)
-;; (require 'prelude-haskell)
+(require 'prelude-haskell)
 (require 'prelude-js)
 (require 'prelude-latex)
 ;; (require 'prelude-lisp)
@@ -53,6 +53,8 @@
 
 (define-key evil-normal-state-map (kbd "C-]") 'my-jump-to-tag)
 
+(require 'evil-magit)
+
 ;; Theme
 
 (load-theme 'monokai)
@@ -74,13 +76,19 @@
 
 ;;; Modes:
 
-;; intero and Haskell-mode
-(use-package intero
-  :ensure t)
-(add-hook 'haskell-mode-hook 'intero-mode)
+;; Haskell
+(custom-set-variables
+ '(haskell-stylish-on-save t))
 
-(require 'haskell-mode)
-(define-key haskell-mode-map [f12] 'intero-devel-reload)
+(add-hook 'haskell-mode-hook 'haskell-auto-insert-module-template)
+
+;; intero and Haskell-mode
+;; (use-package intero
+;;   :ensure t)
+;; (add-hook 'haskell-mode-hook 'intero-mode)
+
+;; (require 'haskell-mode)
+;; (define-key haskell-mode-map [f12] 'intero-devel-reload)
 
 ;; PureScript
 (use-package purescript-mode
@@ -96,11 +104,31 @@
             (haskell-indentation-mode)
             (company-mode)))
 
+(use-package flycheck-purescript
+  :ensure t)
+(eval-after-load 'flycheck
+  '(flycheck-purescript-setup))
+
+;; Elm
+
+(use-package elm-mode
+  :ensure t)
+
+;; JavaScript
+(setq-default js2-basic-offset 2)
+(setq js2-strict-missing-semi-warning nil)
+
+;; CSS/SCSS
+(setq-default css-indent-offset 2)
+
 ;;; General editor niceties
 (global-linum-mode t)
 (column-number-mode t)
 (setq-default indent-tabs-mode nil)
 (setq-default show-trailing-whitespace t)
+(global-auto-revert-mode t)
+
+(setq-default evil-auto-indent nil)
 
 (provide 'init)
 ;;; init.el ends here
