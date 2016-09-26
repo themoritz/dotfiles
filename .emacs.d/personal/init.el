@@ -127,7 +127,24 @@
 (setq-default indent-tabs-mode nil)
 (setq-default show-trailing-whitespace t)
 (global-auto-revert-mode t)
+(scroll-bar-mode -1)
 
+(advice-add 'company-call-frontends :before #'on-off-fci-before-company)
+
+;; Column limit
+(setq-default whitespace-line-column -1)
+(setq-default fill-column 80)
+(setq-default fci-rule-width 2)
+(add-hook 'prog-mode-hook 'turn-on-fci-mode)
+(require 'fill-column-indicator)
+
+(defun on-off-fci-before-company(command)
+  (when (string= "show" command)
+    (turn-off-fci-mode))
+  (when (string= "hide" command)
+    (turn-on-fci-mode)))
+
+;; No evil indent on open line since it interferes with haskell-mode
 (setq-default evil-auto-indent nil)
 
 (provide 'init)
