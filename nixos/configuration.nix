@@ -37,6 +37,7 @@ in
 
     # List packages installed in system profile. To search by name, run:
     systemPackages = with pkgs; [
+      emacs
       gnumake
       haskellPackages.stack
       wget
@@ -53,7 +54,6 @@ in
     ];
 
     # etc = with pkgs; {
-    #   "xdg/awesome/rc.lua".text = import ./dotfiles/awesome.nix { inherit networkmanagerapplet slock xautolock; };
     #   "X11/Xresources".text = builtins.readFile ./dotfiles/Xresources;
     #   "gitconfig".text = import ./dotfiles/git.nix { vim = myvim; };
     # };

@@ -24,7 +24,7 @@
 ;; (require 'prelude-erlang)
 ;; (require 'prelude-elixir)
 ;; (require 'prelude-go)
-(require 'prelude-haskell)
+;(require 'prelude-haskell)
 (require 'prelude-js)
 (require 'prelude-latex)
 ;; (require 'prelude-lisp)
@@ -83,12 +83,12 @@
 (add-hook 'haskell-mode-hook 'haskell-auto-insert-module-template)
 
 ;; intero and Haskell-mode
-;; (use-package intero
-;;   :ensure t)
-;; (add-hook 'haskell-mode-hook 'intero-mode)
+(use-package intero
+  :ensure t)
+(add-hook 'haskell-mode-hook 'intero-mode)
 
-;; (require 'haskell-mode)
-;; (define-key haskell-mode-map [f12] 'intero-devel-reload)
+(require 'haskell-mode)
+(define-key haskell-mode-map [f12] 'intero-devel-reload)
 
 ;; PureScript
 (use-package purescript-mode
