@@ -37,6 +37,8 @@ in
 
     # List packages installed in system profile. To search by name, run:
     systemPackages = with pkgs; [
+      zlib
+      skype
       emacs
       gnumake
       haskellPackages.stack
@@ -71,12 +73,6 @@ in
   services.xserver = {
     enable = true;
     layout = "us";
-    # windowManager.awesome = {
-    #   enable = true;
-    #   luaModules = with pkgs.luaPackages; [
-    #     vicious
-    #   ];
-    # };
     windowManager.i3 = {
       enable = true;
     };

@@ -41,6 +41,11 @@
 ;; (require 'prelude-xml)
 ;; (require 'prelude-yaml)
 
+; Bootstrap 'use-package'
+(unless (package-installed-p 'use-package)
+  (package-refresh-contents)
+  (package-install 'use-package))
+
 ;;: Evil customization:
 
 ; Remap Vim's C-] to Emacs' jump-to-tag
@@ -53,10 +58,13 @@
 
 (define-key evil-normal-state-map (kbd "C-]") 'my-jump-to-tag)
 
-(require 'evil-magit)
+(use-package evil-magit
+  :ensure t)
 
 ;; Theme
 
+(use-package monokai-theme
+  :ensure t)
 (load-theme 'monokai)
 
 ;; Get package installation ready
@@ -68,11 +76,6 @@
 (add-to-list 'package-archives ; for purescript-mode
              '("emacs-pe" . "https://emacs-pe.github.io/packages/"))
 (package-initialize)
-
-; Bootstrap 'use-package'
-(unless (package-installed-p 'use-package)
-  (package-refresh-contents)
-  (package-install 'use-package))
 
 ;;; Modes:
 
@@ -128,15 +131,17 @@
 (setq-default show-trailing-whitespace t)
 (global-auto-revert-mode t)
 (scroll-bar-mode -1)
+(diff-hl-mode -1)
 
 (advice-add 'company-call-frontends :before #'on-off-fci-before-company)
 
 ;; Column limit
+(use-package fill-column-indicator
+  :ensure t)
 (setq-default whitespace-line-column -1)
 (setq-default fill-column 80)
 (setq-default fci-rule-width 2)
 (add-hook 'prog-mode-hook 'turn-on-fci-mode)
-(require 'fill-column-indicator)
 
 (defun on-off-fci-before-company(command)
   (when (string= "show" command)
