@@ -11,7 +11,9 @@ in
       ./hardware-configuration.nix
     ];
 
-  nixpkgs.config.allowUnfree = true;
+  nixpkgs.config = {
+    allowUnfree = true;
+  };
 
   # Use the systemd-boot EFI boot loader.
   boot.loader.systemd-boot.enable = true;
@@ -20,6 +22,8 @@ in
 
   networking.hostName = "moritz";
   networking.networkmanager.enable = true;
+
+  hardware.pulseaudio.enable = true;
 
   # Select internationalisation properties.
   i18n = {
@@ -52,13 +56,9 @@ in
       dropbox
       git
       i3status
+      i3lock
       dmenu
     ];
-
-    # etc = with pkgs; {
-    #   "X11/Xresources".text = builtins.readFile ./dotfiles/Xresources;
-    #   "gitconfig".text = import ./dotfiles/git.nix { vim = myvim; };
-    # };
 
   };
 
@@ -78,7 +78,8 @@ in
     };
     synaptics = {
       enable = true;
-      accelFactor = "0.01";
+      accelFactor = "0.001";
+      minSpeed = "1.0";
       maxSpeed = "3.0";
       buttonsMap = [ 1 3 2 ];
       palmDetect = true;
