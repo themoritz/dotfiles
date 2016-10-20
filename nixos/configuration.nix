@@ -20,8 +20,10 @@ in
   boot.loader.efi.canTouchEfiVariables = true;
   boot.loader.grub.device = "/dev/sda";
 
-  networking.hostName = "moritz";
+  networking.hostName = "moritz.local";
   networking.networkmanager.enable = true;
+  networking.networkmanager.insertNameservers = [ "8.8.8.8" "8.8.4.4" ];
+  networking.extraHosts = "127.0.0.1 moritz.local";
 
   hardware.pulseaudio.enable = true;
 
@@ -41,7 +43,6 @@ in
 
     # List packages installed in system profile. To search by name, run:
     systemPackages = with pkgs; [
-      zlib
       skype
       emacs
       gnumake
@@ -55,6 +56,8 @@ in
       dropbox-cli
       dropbox
       git
+      # Window manager related:
+      feh
       i3status
       i3lock
       dmenu
