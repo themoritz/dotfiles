@@ -24,7 +24,7 @@
 ;; (require 'prelude-erlang)
 ;; (require 'prelude-elixir)
 ;; (require 'prelude-go)
-;(require 'prelude-haskell)
+(require 'prelude-haskell)
 (require 'prelude-js)
 (require 'prelude-latex)
 ;; (require 'prelude-lisp)
@@ -86,31 +86,31 @@
 (add-hook 'haskell-mode-hook 'haskell-auto-insert-module-template)
 
 ;; intero and Haskell-mode
-(use-package intero
-  :ensure t)
-(add-hook 'haskell-mode-hook 'intero-mode)
+; (use-package intero
+;   :ensure t)
+; (add-hook 'haskell-mode-hook 'intero-mode)
 
-(require 'haskell-mode)
-(define-key haskell-mode-map [f12] 'intero-devel-reload)
+; (require 'haskell-mode)
+; (define-key haskell-mode-map [f12] 'intero-devel-reload)
 
 ;; PureScript
-(use-package purescript-mode
-  :ensure t
-  :pin emacs-pe)
+; (use-package purescript-mode
+;   :ensure t
+;   :pin emacs-pe)
+;
+; (use-package psc-ide
+;   :ensure t)
 
-(use-package psc-ide
-  :ensure t)
+; (add-hook 'purescript-mode-hook
+;           (lambda ()
+;             (psc-ide-mode)
+;             (haskell-indentation-mode)
+;             (company-mode)))
 
-(add-hook 'purescript-mode-hook
-          (lambda ()
-            (psc-ide-mode)
-            (haskell-indentation-mode)
-            (company-mode)))
-
-(use-package flycheck-purescript
-  :ensure t)
-(eval-after-load 'flycheck
-  '(flycheck-purescript-setup))
+; (use-package flycheck-purescript
+;   :ensure t)
+; (eval-after-load 'flycheck
+;   '(flycheck-purescript-setup))
 
 ;; Elm
 
@@ -132,6 +132,8 @@
 (global-auto-revert-mode t)
 (scroll-bar-mode -1)
 (diff-hl-mode -1)
+(setq browse-url-browser-function 'browse-url-generic
+      browse-url-generic-program "google-chrome-stable")
 
 (advice-add 'company-call-frontends :before #'on-off-fci-before-company)
 

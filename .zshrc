@@ -45,13 +45,11 @@ ZSH_THEME="robbyrussell" # "norm"
 # Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
-plugins=(git sublime wd emacs thefuck)
+plugins=(git wd emacs)
 
 source $ZSH/oh-my-zsh.sh
 
 # User configuration
-
-export PATH="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
 
 # export MANPATH="/usr/local/man:$MANPATH"
 
@@ -81,8 +79,3 @@ export PATH="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
 
 source $HOME/.profile
-
-export PATH="$PATH:$HOME/.rvm/bin" # Add RVM to PATH for scripting
-
-export NVM_DIR="/home/moritz/.nvm"
-[ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"  # This loads nvm

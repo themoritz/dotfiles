@@ -4,7 +4,7 @@ ln -s dotfiles/.xinitrc .
 ln -s dotfiles/.zshrc .
 ln -s dotfiles/.profile .
 ln -s dotfiles/.gitconfig .
-ln -s dotfiles/.bashrc .
+# ln -s dotfiles/.bashrc .
 
 mkdir -p ~/.config
 cd ~/.config

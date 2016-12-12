@@ -2,6 +2,13 @@
 
 let
   myvim = import ./include/vim.nix { inherit pkgs; };
+  latex = pkgs.texlive.combine { inherit (pkgs.texlive)
+    scheme-basic
+    lato
+    slantsc
+    collection-fontsrecommended
+    collection-latexrecommended;
+  };
 
 in
 
@@ -47,8 +54,11 @@ in
       emacs
       gnumake
       haskellPackages.stack
+      mongodb-tools
+      latex
       wget
       tree
+      nodejs
       myvim
       google-chrome
       bashInteractive
@@ -70,7 +80,13 @@ in
   };
 
   # Enable CUPS to print documents.
-  services.printing.enable = true;
+  services.printing = {
+    enable = true;
+    drivers = [
+      pkgs.splix # For Samsung printers (ML-1640)
+      # (import ./include/brother.nix { pkgs = pkgs; })
+    ];
+  };
 
   # Enable the X11 windowing system.
   services.xserver = {
@@ -92,6 +108,10 @@ in
     };
   };
 
+  services.mongodb = {
+    enable = true;
+  };
+
   # Define a user account. Don't forget to set a password with ‘passwd’.
   users.extraUsers.moritz = {
     isNormalUser = true;
@@ -103,5 +123,11 @@ in
 
   # The NixOS release to be compatible with for stateful data such as databases.
   system.stateVersion = "16.09";
+
+  nix.nixPath = [
+    "nixpkgs=/nix/var/nix/profiles/per-user/root/channels/nixpkgs"
+    "nixos-config=/etc/nixos/configuration.nix"
+    "/nix/var/nix/profiles/per-user/root/channels"
+  ];
 
 }
