@@ -46,7 +46,7 @@
   (package-refresh-contents)
   (package-install 'use-package))
 
-;;: Evil customization:
+;;; Evil customization:
 
 ; Remap Vim's C-] to Emacs' jump-to-tag
 (defun my-jump-to-tag ()
@@ -58,13 +58,15 @@
 
 (define-key evil-normal-state-map (kbd "C-]") 'my-jump-to-tag)
 
-(use-package evil-magit
-  :ensure t)
+(use-package evil-magit :ensure t)
+
+;; Fix path
+(use-package exec-path-from-shell :ensure t)
+(exec-path-from-shell-initialize)
 
 ;; Theme
 
-(use-package monokai-theme
-  :ensure t)
+(use-package monokai-theme :ensure t)
 (load-theme 'monokai)
 
 ;; Get package installation ready
@@ -81,7 +83,8 @@
 
 ;; Haskell
 (custom-set-variables
- '(haskell-stylish-on-save t))
+  '(haskell-stylish-on-save t)
+  '(haskell-process-type 'cabal-repl))
 
 (add-hook 'haskell-mode-hook 'haskell-auto-insert-module-template)
 

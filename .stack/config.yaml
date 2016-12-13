@@ -6,6 +6,7 @@
 nix:
   enable: true
   packages:
+    - gcc
     - ncurses.out
     - ncurses.dev
     - zlib.out
