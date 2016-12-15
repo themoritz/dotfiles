@@ -91,7 +91,8 @@ in
   # Enable the X11 windowing system.
   services.xserver = {
     enable = true;
-    layout = "us";
+    layout = "us,de";
+    xkbOptions = "grp:alt_shift_toggle";
     windowManager.i3 = {
       enable = true;
     };

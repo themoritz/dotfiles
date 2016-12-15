@@ -84,17 +84,17 @@
 ;; Haskell
 (custom-set-variables
   '(haskell-stylish-on-save t)
-  '(haskell-process-type 'cabal-repl))
+)
 
 (add-hook 'haskell-mode-hook 'haskell-auto-insert-module-template)
 
 ;; intero and Haskell-mode
-; (use-package intero
-;   :ensure t)
-; (add-hook 'haskell-mode-hook 'intero-mode)
+(use-package intero
+  :ensure t)
+(add-hook 'haskell-mode-hook 'intero-mode)
 
-; (require 'haskell-mode)
-; (define-key haskell-mode-map [f12] 'intero-devel-reload)
+(require 'haskell-mode)
+(define-key haskell-mode-map [f12] 'intero-devel-reload)
 
 ;; PureScript
 ; (use-package purescript-mode
@@ -127,6 +127,9 @@
 ;; CSS/SCSS
 (setq-default css-indent-offset 2)
 
+;; Disable whitespace mode
+(setq prelude-whitespace nil)
+
 ;;; General editor niceties
 (global-linum-mode t)
 (column-number-mode t)
@@ -143,7 +146,6 @@
 ;; Column limit
 (use-package fill-column-indicator
   :ensure t)
-(setq-default whitespace-line-column -1)
 (setq-default fill-column 80)
 (setq-default fci-rule-width 2)
 (add-hook 'prog-mode-hook 'turn-on-fci-mode)
