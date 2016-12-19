@@ -159,3 +159,5 @@ bar {
 
 exec --no-startup-id nm-applet
 exec --no-startup-id dropbox start
+exec --no-startup-id sh ~/.fehbg
+exec --no-startup-id syndaemon -i 0.5 -m 50 -K

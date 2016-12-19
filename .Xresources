@@ -1,8 +1,8 @@
-XTerm*faceName: Bitstream Vera Serif Mono
-XTerm*faceSize: 12
-XTerm*saveLines: 16384
-XTerm*utf8: 1
-XTerm*renderFont: true
+UXTerm*faceName: default
+UXTerm*faceSize: 12
+UXTerm*renderFont: true
+UXTerm*saveLines: 16384
+UXTerm*utf8: 1
 *background: rgb:00/00/00
 *foreground: rgb:ff/ff/ff
 *.dpi: 100
