@@ -81,6 +81,10 @@
 
 ;;; Modes:
 
+;; Nix
+
+(require 'nix-mode)
+
 ;; Haskell
 (custom-set-variables
   '(haskell-stylish-on-save t)
@@ -88,10 +92,17 @@
 
 (add-hook 'haskell-mode-hook 'haskell-auto-insert-module-template)
 
+(add-to-list 'grep-find-ignored-files "*.js_hi")
+(add-to-list 'grep-find-ignored-files "*.js_o")
+(add-to-list 'grep-find-ignored-files "*.js_dyn_hi")
+(add-to-list 'grep-find-ignored-files "*.js_dyn_o")
+(add-to-list 'grep-find-ignored-directories "*.jsexe")
+
 ;; intero and Haskell-mode
 (use-package intero
   :ensure t)
-(add-hook 'haskell-mode-hook 'intero-mode)
+(setq intero-blacklist '("~/code/herculus/hexl/client/"))
+(add-hook 'haskell-mode-hook 'intero-mode-blacklist)
 
 (require 'haskell-mode)
 (define-key haskell-mode-map [f12] 'intero-devel-reload)
@@ -114,6 +125,10 @@
 ;   :ensure t)
 ; (eval-after-load 'flycheck
 ;   '(flycheck-purescript-setup))
+
+;; Idris
+
+(use-package idris-mode :ensure t)
 
 ;; Elm
 
