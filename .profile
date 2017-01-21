@@ -33,3 +33,6 @@ export PATH="$PATH:$HOME/.rvm/bin" # Add RVM to PATH for scripting
 # NVM
 export NVM_DIR="/home/moritz/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"  # This loads nvm
+
+# Node prefix
+export PATH="$PATH:$HOME/.npm/bin"

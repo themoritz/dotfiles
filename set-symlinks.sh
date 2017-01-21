@@ -3,6 +3,7 @@ ln -s dotfiles/.Xresources .
 ln -s dotfiles/.xinitrc .
 ln -s dotfiles/.zshrc .
 ln -s dotfiles/.profile .
+ln -s dotfiles/.npmrc .
 ln -s dotfiles/.gitconfig .
 # ln -s dotfiles/.bashrc .
 
