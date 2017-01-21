@@ -5,7 +5,10 @@ let
   latex = pkgs.texlive.combine { inherit (pkgs.texlive)
     scheme-basic
     lato
-    slantsc
+    titlesec
+    enumitem
+    lastpage
+    collection-langgerman
     collection-fontsrecommended
     collection-latexrecommended;
   };
