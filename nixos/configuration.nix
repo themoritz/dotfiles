@@ -5,6 +5,7 @@ let
   latex = pkgs.texlive.combine { inherit (pkgs.texlive)
     scheme-basic
     lato
+    slantsc
     titlesec
     enumitem
     lastpage
@@ -50,29 +51,41 @@ in
 
   environment = {
 
-    # List packages installed in system profile. To search by name, run:
     systemPackages = with pkgs; [
-      skype
-      emacs
-      gnumake
-      haskellPackages.stack
-      mongodb-tools
-      latex
-      wget
-      tree
-      nodejs
-      myvim
-      google-chrome
+      arandr
+      baobab
       bashInteractive
-      networkmanagerapplet
+      bashmount
+      cloc
+      direnv
       dropbox-cli
       dropbox
+      emacs
+      evince
+      ghc
       git
+      gimp
+      gnumake
+      google-chrome
+      stack
+      haskellPackages.hlint
+      latex
+      mongodb-tools
+      myvim
+      gnome3.nautilus
+      nixops
+      nodejs
+      pavucontrol
+      skype
+      tree
+      vlc
+      wget
       # Window manager related:
       feh
       i3status
       i3lock
       dmenu
+      networkmanagerapplet
     ];
 
   };

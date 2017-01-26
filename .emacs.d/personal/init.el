@@ -12,7 +12,6 @@
 (require 'prelude-helm) ;; Interface for narrowing and search
 (require 'prelude-helm-everywhere) ;; Enable Helm everywhere
 (require 'prelude-company)
-(require 'prelude-evil)
 
 ;; Programming languages support
 ;; (require 'prelude-c)
@@ -57,10 +56,11 @@
 
 ;;; Evil customization ---------------------------------------------------------
 
+(setq evil-want-C-u-scroll t)
+(require 'prelude-evil)
+
 ;; New binding for `eval-expression'
 (define-key evil-normal-state-map (kbd "M-;") 'eval-expression)
-
-(setq evil-want-C-u-scroll t)
 
 ;; Remap Vim's C-] to Emacs' jump-to-tag
 (defun my-jump-to-tag ()
@@ -75,9 +75,6 @@
 (use-package evil-smartparens
   :ensure t)
 (add-hook 'smartparens-enabled-hook #'evil-smartparens-mode)
-
-;; No evil indent on open line since it interferes with haskell-mode
-(setq-default evil-auto-indent nil)
 
 ;;; Misc -----------------------------------------------------------------------
 
@@ -104,6 +101,11 @@
   '(haskell-stylish-on-save t))
 
 (add-hook 'haskell-mode-hook 'haskell-auto-insert-module-template)
+
+;; No evil indent on open line since it interferes with haskell-mode
+(add-hook 'haskell-mode-hook
+          (lambda ()
+            (setq-local evil-auto-indent nil)))
 
 (add-to-list 'grep-find-ignored-files "*.js_hi")
 (add-to-list 'grep-find-ignored-files "*.js_o")
@@ -135,13 +137,16 @@
             (company-mode)))
 
 ;; Idris
-(use-package idris-mode :ensure t)
+(use-package idris-mode
+  :ensure t)
 
 ;; Elm
 (use-package elm-mode
   :ensure t)
 
 ;; JavaScript
+;(use-package js2-mode
+  ;:ensure t)
 (setq-default js2-basic-offset 2)
 (setq js2-strict-missing-semi-warning nil)
 
@@ -167,6 +172,10 @@
       browse-url-generic-program "google-chrome-stable")
 
 (advice-add 'company-call-frontends :before #'on-off-fci-before-company)
+
+;; Let dired guess default target directory for copy/move (e.g. other dired
+;; window
+(setq dired-dwim-target t)
 
 ;; Column limit
 (use-package fill-column-indicator
