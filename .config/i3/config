@@ -160,6 +160,7 @@ bar {
         status_command /run/current-system/sw/bin/i3status
 }
 
+exec --no-startup-id xset r rate 200 20
 exec --no-startup-id nm-applet
 exec --no-startup-id dropbox start
 exec --no-startup-id sh ~/.fehbg
