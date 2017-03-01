@@ -19,12 +19,12 @@
 ;; (require 'prelude-coffee)
 ;; (require 'prelude-common-lisp)
 ;; (require 'prelude-css)
-;; (require 'prelude-emacs-lisp) ;; breaks intero-blacklist
+(require 'prelude-emacs-lisp)    ;; breaks intero-blacklist
 ;; (require 'prelude-erlang)
 ;; (require 'prelude-elixir)
 ;; (require 'prelude-go)
 ;; (require 'prelude-haskell)    ;; breaks intero-blacklist
-;; (require 'prelude-js)         ;; breaks intero-blacklist
+(require 'prelude-js)            ;; breaks intero-blacklist
 (require 'prelude-latex)
 ;; (require 'prelude-lisp)
 ;; (require 'prelude-ocaml)
@@ -72,9 +72,9 @@
 (define-key evil-normal-state-map (kbd "C-]") 'my-jump-to-tag)
 
 ;; Smart parens
-(use-package evil-smartparens
-  :ensure t)
-(add-hook 'smartparens-enabled-hook #'evil-smartparens-mode)
+;(use-package evil-smartparens
+;  :ensure t)
+;(add-hook 'smartparens-enabled-hook #'evil-smartparens-mode)
 
 ;;; Misc -----------------------------------------------------------------------
 
@@ -202,6 +202,15 @@
 (set-face-attribute 'bold nil :family "Fira Code")
 (set-face-attribute 'bold nil :height 117)
 (set-face-attribute 'bold nil :weight 'bold)
+
+(custom-set-faces
+ '(sp-show-pair-match-face
+   ((t
+     (:background nil
+      :foreground nil
+      :inverse-video nil
+      :underline "#F92672"
+      :weight normal)))))
 
 ;; -----------------------------------------------------------------------------
 
