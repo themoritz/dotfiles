@@ -31,11 +31,14 @@ in
   boot.loader.efi.canTouchEfiVariables = true;
   boot.loader.grub.device = "/dev/sda";
 
-  networking.hostName = "moritz.local"; # .local to prevent emacs slow load bug
-  networking.networkmanager.enable = true;
-  networking.networkmanager.insertNameservers = [ "8.8.8.8" "8.8.4.4" ];
+  networking = {
+    hostName = "moritz.local"; # .local to prevent emacs slow load bug
+    networkmanager.enable = true;
+    networkmanager.insertNameservers = [ "8.8.8.8" "8.8.4.4" ];
+  };
 
   hardware.pulseaudio.enable = true;
+  hardware.bluetooth.enable = false;
 
   # Select internationalisation properties.
   i18n = {
@@ -56,27 +59,33 @@ in
       baobab
       bashInteractive
       bashmount
+      calibre
       cloc
       direnv
       dropbox-cli
       dropbox
       emacs
       evince
+      firefox
       ghc
       git
       gimp
       gnumake
       google-chrome
+      imagemagick
+      libreoffice
       stack
       haskellPackages.hlint
+      haskellPackages.idris
       latex
       mongodb-tools
       myvim
       gnome3.nautilus
       nixops
       nodejs
+      octave
       pavucontrol
-      skype
+      slack
       tree
       vlc
       wget
@@ -98,8 +107,8 @@ in
   services.printing = {
     enable = true;
     drivers = [
-      pkgs.splix # For Samsung printers (ML-1640)
-      # (import ./include/brother.nix { pkgs = pkgs; })
+      pkgs.samsung-unified-linux-driver
+      # pkgs.splix # For Samsung printers (ML-1640, but not ML-2165)
     ];
   };
 
@@ -127,6 +136,8 @@ in
   services.mongodb = {
     enable = true;
   };
+
+  services.trezord.enable = true;
 
   # Define a user account. Don't forget to set a password with ‘passwd’.
   users.extraUsers.moritz = {

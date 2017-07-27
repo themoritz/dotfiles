@@ -3,6 +3,12 @@
 # http://docs.haskellstack.org/en/stable/yaml_configuration/
 #
 
+templates:
+  params:
+    author-email: mdrexl@fastmail.fm
+    author-name: Moritz Drexl
+    github-username: the-moritz
+
 nix:
   enable: true
   packages:
@@ -12,3 +18,5 @@ nix:
     - ncurses.dev
     - zlib.out
     - zlib.dev
+    - gmp.out
+    - gmp.dev

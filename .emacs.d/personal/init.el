@@ -132,13 +132,18 @@
 (add-hook 'purescript-mode-hook
           (lambda ()
             (psc-ide-mode)
-            (turn-on-purescript-indentation)
+            (haskell-indentation-mode)
             (flycheck-mode)
             (company-mode)))
 
 ;; Idris
 (use-package idris-mode
   :ensure t)
+
+;; No evil indent on open line since it interferes with haskell-mode
+(add-hook 'idris-mode-hook
+          (lambda ()
+            (setq-local evil-auto-indent nil)))
 
 ;; Elm
 (use-package elm-mode
