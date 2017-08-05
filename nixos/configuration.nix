@@ -3,7 +3,7 @@
 let
   myvim = import ./include/vim.nix { inherit pkgs; };
   latex = pkgs.texlive.combine { inherit (pkgs.texlive)
-    scheme-basic
+    scheme-full
     lato
     slantsc
     titlesec
@@ -11,7 +11,8 @@ let
     lastpage
     collection-langgerman
     collection-fontsrecommended
-    collection-latexrecommended;
+    collection-latexrecommended
+    chktex;
   };
 
 in
@@ -72,6 +73,10 @@ in
       gimp
       gnumake
       google-chrome
+      gparted
+      udiskie # auto mount
+      ntfs3g # read-only filesystem issue
+      keepass
       imagemagick
       libreoffice
       stack
@@ -95,12 +100,15 @@ in
       i3lock
       dmenu
       networkmanagerapplet
+      xdotool
+      zip
+      unzip
     ];
 
   };
 
   programs = {
-    zsh.enable = true;
+    fish.enable = true;
   };
 
   # Enable CUPS to print documents.
@@ -144,15 +152,16 @@ in
     isNormalUser = true;
     description = "Moritz Drexl";
     extraGroups = [ "wheel" "networkmanager" ];
+    initialPassword = "moritz";
     uid = 1000;
-    shell = "${pkgs.zsh}/bin/zsh";
+    shell = "${pkgs.fish}/bin/fish";
   };
 
   # The NixOS release to be compatible with for stateful data such as databases.
-  system.stateVersion = "16.09";
+  system.stateVersion = "17.03";
 
   nix.nixPath = [
-    "nixpkgs=/nix/var/nix/profiles/per-user/root/channels/nixpkgs"
+    "nixpkgs=/nix/var/nix/profiles/per-user/root/channels/nixos"
     "nixos-config=/etc/nixos/configuration.nix"
     "/nix/var/nix/profiles/per-user/root/channels"
   ];

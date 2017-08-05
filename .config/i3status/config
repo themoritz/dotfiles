@@ -5,6 +5,7 @@ general {
 }
 
 order += "disk /"
+order += "disk /home"
 # order += "run_watch DHCP"
 # order += "run_watch VPNC"
 # order += "path_exists VPN"
@@ -29,11 +30,11 @@ ethernet eth0 {
 }
 
 battery 0 {
-        format = "%status %percentage %remaining %emptytime"
+        format = "%status %percentage %remaining"
         format_down = "No battery"
-        status_chr = "⚇ CHR"
-        status_bat = "⚡ BAT"
-        status_full = "☻ FULL"
+        status_chr = "⚇"
+        status_bat = "⚡"
+        status_full = "☻"
         path = "/sys/class/power_supply/BAT%d/uevent"
         low_threshold = 10
 }
@@ -76,5 +77,9 @@ cpu_temperature 0 {
 }
 
 disk "/" {
-        format = "%free"
+        format = "Root: %free"
+}
+
+disk "/home" {
+        format = "Home: %free"
 }
