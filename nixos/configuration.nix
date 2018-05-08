@@ -2,6 +2,7 @@
 
 let
   myvim = import ./include/vim.nix { inherit pkgs; };
+  myemacs = import ./include/emacs.nix { inherit pkgs; };
   latex = pkgs.texlive.combine { inherit (pkgs.texlive)
     scheme-full
     lato
@@ -65,7 +66,6 @@ in
       direnv
       dropbox-cli
       dropbox
-      emacs
       evince
       firefox
       ghc
@@ -85,6 +85,7 @@ in
       # haskellPackages.idris # doesn't build
       latex
       mongodb-tools
+      myemacs
       myvim
       gnome3.nautilus
       nixops
