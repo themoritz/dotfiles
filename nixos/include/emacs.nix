@@ -2,22 +2,23 @@
 
 let
   isDarwin = pkgs.stdenv.isDarwin;
-  emacs = if isDarwin then pkgs.emacs-mac else pkgs.emacs;
+  emacs = if isDarwin then pkgs.emacsMacport else pkgs.emacs;
   emacsWithPackages = (pkgs.emacsPackagesNgGen emacs).emacsWithPackages;
 
 in
   emacsWithPackages (epkgs: (with epkgs.melpaStablePackages; [
+    ace-window
     avy
     magit
     monokai-theme
     evil
-    evil-magit
     ivy
     ivy-hydra
     hydra
     counsel
     swiper
     powerline
+    nix-buffer
     markdown-mode
     yaml-mode
     company
@@ -28,6 +29,7 @@ in
     dhall-mode
     dante
     nix-mode
+    evil-magit
   ] ++
   (if isDarwin
   then [exec-path-from-shell]
