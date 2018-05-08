@@ -1,27 +1,37 @@
 { pkgs ? import <nixpkgs> {} }:
 
 let
-  emacsWithPackages = (pkgs.emacsPackagesNgGen pkgs.emacs).emacsWithPackages;
+  isDarwin = pkgs.stdenv.isDarwin;
+  emacs = if isDarwin then pkgs.emacs-mac else pkgs.emacs;
+  emacsWithPackages = (pkgs.emacsPackagesNgGen emacs).emacsWithPackages;
 
 in
   emacsWithPackages (epkgs: (with epkgs.melpaStablePackages; [
+    avy
     magit
     monokai-theme
     evil
     evil-magit
     ivy
-    projectile
+    ivy-hydra
+    hydra
     counsel
-    counsel-projectile
     swiper
     powerline
+    markdown-mode
+    yaml-mode
+    company
+    flycheck
+    fill-column-indicator
   ]) ++ (with epkgs.melpaPackages; [
     haskell-mode
     dhall-mode
     dante
     nix-mode
-  ]) ++ (with epkgs.elpaPackages; [
-    undo-tree      # ; <C-x u> to show the undo tree
-    auctex         # ; LaTeX mode
-    beacon         # ; highlight my cursor when scrolling
+  ] ++
+  (if isDarwin
+  then [exec-path-from-shell]
+  else [])) ++ (with epkgs.elpaPackages; [
+    undo-tree
+    auctex
   ]))
