@@ -72,6 +72,7 @@ in
       git
       gimp
       gnumake
+      gnupg
       google-chrome
       gparted
       udiskie # auto mount
@@ -81,7 +82,7 @@ in
       libreoffice
       stack
       haskellPackages.hlint
-      haskellPackages.idris
+      # haskellPackages.idris # doesn't build
       latex
       mongodb-tools
       myvim
