@@ -43,7 +43,6 @@
 (global-set-key (kbd "C-c g") 'counsel-git)
 (global-set-key (kbd "C-c C-/") 'evil-avy-goto-char-timer)
 (global-set-key (kbd "C-c u") 'counsel-unicode-char)
-(global-set-key (kbd "/") 'swiper)
 (with-eval-after-load 'evil-maps
   (define-key evil-motion-state-map (kbd "/") 'swiper))
 
