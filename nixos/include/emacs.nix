@@ -18,18 +18,29 @@ in
     counsel
     swiper
     powerline
-    nix-buffer
+    direnv
     markdown-mode
     yaml-mode
     company
     flycheck
     fill-column-indicator
+    # org-mode
+    org-bullets
   ]) ++ (with epkgs.melpaPackages; [
     haskell-mode
     dhall-mode
     dante
     nix-mode
     evil-magit
+    evil-surround
+    engine-mode
+    diminish
+    expand-region
+    # Rust
+    rust-mode
+    flycheck-rust
+    racer
+    cargo
   ] ++
   (if isDarwin
   then [exec-path-from-shell]
