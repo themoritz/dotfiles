@@ -20,18 +20,10 @@ if [ -d "$HOME/.local/bin" ] ; then
   export PATH="$HOME/.local/bin:$PATH"
 fi
 
-# Go
-export GOPATH=$HOME/go
-export PATH="$HOME/go/bin:$PATH"
-
 # nix (added by Nix installer)
 if [ -e /home/moritz/.nix-profile/etc/profile.d/nix.sh ]; then
   . /home/moritz/.nix-profile/etc/profile.d/nix.sh
 fi 
-
-# RVM
-export PATH="$PATH:$HOME/.rvm/bin" # Add RVM to PATH for scripting
-[[ -s "$HOME/.rvm/scripts/rvm" ]] && source "$HOME/.rvm/scripts/rvm" # Load RVM into a shell session *as a function*
 
 # NVM
 export NVM_DIR="/home/moritz/.nvm"

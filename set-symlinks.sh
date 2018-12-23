@@ -15,8 +15,3 @@ ln -s ../dotfiles/.config/i3status/ .
 mkdir -p ~/.stack
 cd ~/.stack
 ln -s ../dotfiles/.stack/config.yaml .
-
-cd
-mkdir -p ~/.emacs.d/personal
-cd ~/.emacs.d/personal
-ln -s ../../dotfiles/.emacs.d/personal/init.el .

@@ -4,7 +4,7 @@ let
   myvim = import ./include/vim.nix { inherit pkgs; };
   myemacs = import ./include/emacs.nix { inherit pkgs; };
   latex = pkgs.texlive.combine { inherit (pkgs.texlive)
-    scheme-full
+    scheme-small
     lato
     slantsc
     titlesec
@@ -13,6 +13,7 @@ let
     collection-langgerman
     collection-fontsrecommended
     collection-latexrecommended
+    ltablex
     chktex;
   };
 
@@ -56,6 +57,10 @@ in
 
   environment = {
 
+    variables = {
+      ZSH = [ "${pkgs.oh-my-zsh}/share/oh-my-zsh" ];
+    };
+
     systemPackages = with pkgs; [
       arandr
       baobab
@@ -68,6 +73,7 @@ in
       dropbox
       evince
       firefox
+      fzf
       ghc
       git
       gimp
@@ -77,7 +83,7 @@ in
       gparted
       udiskie # auto mount
       ntfs3g # read-only filesystem issue
-      keepass
+      keepassxc
       imagemagick
       libreoffice
       stack
@@ -110,7 +116,7 @@ in
   };
 
   programs = {
-    fish.enable = true;
+    zsh.enable = true;
   };
 
   # Enable CUPS to print documents.
@@ -156,7 +162,7 @@ in
     extraGroups = [ "wheel" "networkmanager" ];
     initialPassword = "moritz";
     uid = 1000;
-    shell = "${pkgs.fish}/bin/fish";
+    shell = "${pkgs.zsh}/bin/zsh";
   };
 
   # The NixOS release to be compatible with for stateful data such as databases.
