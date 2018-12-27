@@ -251,6 +251,7 @@
 (setq tab-width 2)
 (setq c-basic-offset 2)
 (setq-default indent-tabs-mode nil)
+(setq js-indent-level 2)
 
 (show-paren-mode t)
 
