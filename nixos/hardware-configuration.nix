@@ -17,6 +17,7 @@
     { device = "/dev/disk/by-label/nixos";
       fsType = "ext4";
     };
+  fileSystems."/boot".device = "/dev/disk/by-label/ESP";
   fileSystems."/home".device = "/dev/mapper/crypted";
 
   swapDevices = [ ];
