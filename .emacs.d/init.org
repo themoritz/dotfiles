@@ -243,11 +243,6 @@ https://github.com/jyp/dante/issues/58).
   (add-hook 'haskell-mode-hook 'flycheck-mode)
 #+END_SRC
 
-#+BEGIN_SRC emacs-lisp
-
-
-#+END_SRC
-
 ** org-mode
 
 #+BEGIN_SRC emacs-lisp
