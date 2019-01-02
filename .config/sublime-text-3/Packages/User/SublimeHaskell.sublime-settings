@@ -1,6 +1,0 @@
-{
-	"auto_build_mode": "typecheck-then-warnings",
-	"cache_path": "/home/mdrexl/.cache/sublimetext",
-	"enable_hdevtools": false,
-	"enable_hsdev": true
-}
