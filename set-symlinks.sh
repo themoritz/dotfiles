@@ -5,7 +5,10 @@ ln -s dotfiles/.profile .
 ln -s dotfiles/.npmrc .
 ln -s dotfiles/.gitconfig .
 ln -s dotfiles/.emacs .
-# ln -s dotfiles/.bashrc .
+
+mkdir -p ~/.emacs.d
+cd ~/.emacs.d
+ln -s ../dotfiles/.emacs.d/init.org .
 
 mkdir -p ~/.config
 cd ~/.config

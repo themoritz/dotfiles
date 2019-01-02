@@ -1,0 +1,454 @@
+#+TITLE: Emacs Configuration
+#+AUTHOR: Moritz Drexl
+#+EMAIL: mdrexl@fastmail.fm
+
+* Initialization
+
+This file assumes that all packages were already installed. I'm doing this using
+[[https://nixos.org/nixpkgs/manual/#sec-emacs][Nix's emacsWithPackages]].
+
+#+BEGIN_SRC emacs-lisp
+  (package-initialize)
+#+END_SRC
+
+* Mac Hacks
+  
+Taken from [[https://github.com/TikhonJelvis/dotfiles/blob/e3877a96c7dbb42e34ddf6a907449fc05b3ed108/.emacs#L12][Tikhon Jelvis]]:
+
+#+BEGIN_SRC emacs-lisp
+  (when (eq system-type 'darwin)
+    (setq mac-command-modifier 'meta)
+    (setq mac-option-modifier nil)
+    (let ((nix-vars '("NIX_LINK"
+                      "NIX_PATH"
+                      "SSL_CERT_FILE")))
+      (when (memq window-system '(mac ns))
+        (exec-path-from-shell-initialize) ; $PATH, $MANPATH and set exec-path
+        (mapcar 'exec-path-from-shell-copy-env nix-vars))))
+
+#+END_SRC
+
+* Theme
+
+#+BEGIN_SRC emacs-lisp
+  (load-theme 'monokai t)
+#+END_SRC
+
+* Better Defaults
+  
+Get rid of the annoying splash screen and bell.
+
+#+BEGIN_SRC emacs-lisp
+  (setq inhibit-splash-screen t)
+  (setq ring-bell-function 'ignore) ; No bell
+#+END_SRC
+
+Remove all GUI elements.
+
+#+BEGIN_SRC emacs-lisp
+  (tool-bar-mode -1)
+  (scroll-bar-mode -1)
+  (if (eq system-type 'darwin)
+    (menu-bar-mode 1)
+    (menu-bar-mode -1))
+  (fringe-mode 0) ; No padding around buffers
+#+END_SRC
+
+Disable backups and autosaving
+
+#+BEGIN_SRC emacs-lisp
+  (setq make-backup-files nil
+        auto-save-default nil)
+#+END_SRC
+
+Disable annying help message
+
+#+BEGIN_SRC emacs-lisp
+  (setq suggest-key-bindings nil)
+#+END_SRC
+
+Tuning the garbage collector threshold makes Emacs a bit snappier.
+
+#+BEGIN_SRC emacs-lisp
+  (setq gc-cons-threshold 20000000)
+#+END_SRC
+
+#+BEGIN_SRC emacs-lisp
+  (setq require-final-newline t)
+#+END_SRC
+
+** Column Limit
+   
+This sets the column limit and adds a thin vertical ruler after the column
+limit.
+
+ #+BEGIN_SRC emacs-lisp
+   (setq-default fill-column 80)
+   (setq-default fci-rule-width 1)
+   (add-hook 'prog-mode-hook 'turn-on-fci-mode)
+ #+END_SRC
+
+* General Modes
+  
+** direnv-mode
+
+#+BEGIN_SRC emacs-lisp
+  (setq direnv-show-paths-in-summary nil)
+  (setq direnv-always-show-summary nil)
+  (direnv-mode)
+#+END_SRC
+
+** powerline
+
+#+BEGIN_SRC emacs-lisp
+  (powerline-default-theme)
+#+END_SRC
+
+** evil-mode
+
+#+BEGIN_SRC emacs-lisp
+  (setq evil-want-C-u-scroll t)
+  (evil-mode)
+  (global-evil-surround-mode 1)
+#+END_SRC
+
+** magit
+   
+Make magit play nicely with evil mode.
+
+#+BEGIN_SRC emacs-lisp
+  (evil-magit-init)
+  (add-hook 'with-editor-mode-hook 'evil-insert-state)
+#+END_SRC
+
+** dired
+
+#+BEGIN_SRC emacs-lisp
+  (setq dired-dwim-target t) ; Copy to other dired buffer if exists
+  (add-hook 'dired-mode-hook 'dired-omit-mode)
+  (require 'dired-x)
+  (setq-default dired-omit-files-p t) ; Buffer-local variable
+  (setq dired-omit-files (concat dired-omit-files "\\|^\\..+$"))
+  (fset 'yes-or-no-p 'y-or-n-p) ; Ask for y/n instead of yes/no
+#+END_SRC
+
+** ivy, counsel
+
+#+BEGIN_SRC emacs-lisp
+  (ivy-mode)
+  (evil-set-initial-state 'ivy-occur-mode 'normal)
+#+END_SRC
+
+Trim long lines of =counsel-rg= (=C-c s=) for performance reasons.
+
+#+BEGIN_SRC emacs-lisp
+  (setq counsel-rg-base-command
+        "rg -i -M 120 --no-heading --line-number --color never %s .")
+#+END_SRC
+
+** diminish
+   
+I don't want to see the modes that I always have on on my modeline.
+
+#+BEGIN_SRC emacs-lisp
+  (diminish 'ivy-mode)
+  (diminish 'undo-tree-mode)
+  (diminish 'company-mode)
+  (diminish 'flycheck-mode)
+  (diminish 'eldoc-mode)
+  (diminish 'auto-revert-mode)
+#+END_SRC
+
+** show-paren-mode
+
+#+BEGIN_SRC emacs-lisp
+  (show-paren-mode t)
+#+END_SRC
+
+** ace-window
+
+#+BEGIN_SRC emacs-lisp
+  (setq aw-keys '(?a ?s ?d ?f ?g ?h ?j ?k ?l))
+#+END_SRC
+
+** hydras
+
+#+BEGIN_SRC emacs-lisp
+  (defhydra hydra-zoom (global-map "<f2>")
+    "zoom"
+    ("g" text-scale-increase "in")
+    ("l" text-scale-decrease "out"))
+#+END_SRC
+
+A hydra to control windows. Keybindings are similar to Vim's window handling.
+
+#+BEGIN_SRC emacs-lisp
+  (global-set-key
+    (kbd "C-w")
+    (defhydra hydra-window (:color blue)
+      "window"
+      ("h" windmove-left)
+      ("l" windmove-right)
+      ("j" windmove-down)
+      ("k" windmove-up)
+      ("v" (lambda ()
+             (interactive)
+             (split-window-right)
+             (windmove-right))
+       "vert")
+      ("x" (lambda ()
+             (interactive)
+             (split-window-below)
+             (windmove-down))
+       "horiz")
+      ("o" delete-other-windows "one")
+      ("C-w" ace-window "ace")
+      ("s" ace-swap-window "swap")
+      ("d" ace-delete-window "del")
+      ("i" ace-maximize-window "ace-one")
+      ("b" ivy-switch-buffer "buf")
+      ("q" nil "quit")))
+#+END_SRC
+
+Unset evil's window manipulation bindings for our window hydra to work.
+
+#+BEGIN_SRC emacs-lisp
+  (with-eval-after-load 'evil-maps
+    (dolist (map '(evil-motion-state-map
+                   evil-insert-state-map
+                   evil-emacs-state-map))
+      (define-key (eval map) "\C-w" nil)))
+#+END_SRC
+
+** engine-mode
+   
+Shortcut is =C-x /= followed by the =:keybinding=.
+
+#+BEGIN_SRC emacs-lisp
+  (engine-mode t)
+  (defengine duckduckgo
+    "https://duckduckgo.com/?q=%s"
+    :keybinding "d")
+  (defengine hayoo
+    "https://hayoo.fh-wedel.de/?query=%s"
+    :keybinding "h")
+#+END_SRC
+
+** flycheck-mode
+   
+Flycheck mode must come before the dante-mode hook (see
+https://github.com/jyp/dante/issues/58).
+
+#+BEGIN_SRC emacs-lisp
+  (add-hook 'haskell-mode-hook 'flycheck-mode)
+#+END_SRC
+
+#+BEGIN_SRC emacs-lisp
+
+
+#+END_SRC
+
+** org-mode
+
+#+BEGIN_SRC emacs-lisp
+  (add-hook 'org-mode-hook #'org-bullets-mode)
+#+END_SRC
+
+#+BEGIN_SRC emacs-lisp
+  (setq org-ellipsis "⤵")
+  (setq org-src-fontify-natively t)
+  (setq org-src-tab-acts-natively t)
+#+END_SRC
+
+#+BEGIN_SRC emacs-lisp
+  (setq org-directory "~/org")
+  (defun org-file-path (filename)
+    "Return the absolute address of an org file, given its relative name."
+    (concat (file-name-as-directory org-directory) filename))
+  (setq org-inbox-file (org-file-path "inbox.org"))
+  (setq org-index-file (org-file-path "index.org"))
+  (setq org-archive-location
+        (concat (org-file-path "archive.org") "::* From %s"))
+  (setq org-agenda-files (list org-index-file))
+  (setq org-todo-keywords
+    '((sequence "TODO" "WAITING" "|" "DONE")))
+#+END_SRC
+
+#+BEGIN_SRC emacs-lisp
+
+  (setq org-refile-use-outline-path t)
+  (setq org-outline-path-complete-in-steps nil)
+#+END_SRC
+
+org-capture
+
+#+BEGIN_SRC emacs-lisp
+  (setq org-capture-templates
+        '(("e" "Email" entry
+           (file+headline org-index-file "Inbox")
+           "* TODO %?\n\n%a\n\n")
+
+          ("r" "Reading"
+           checkitem
+           (file (org-file-path "to-read.org")))
+
+          ("t" "Todo"
+           entry
+           (file+headline org-index-file "Inbox")
+           "* TODO %?\n")))
+  (add-hook 'org-capture-mode-hook 'evil-insert-state)
+#+END_SRC
+
+** company-mode
+
+#+BEGIN_SRC emacs-lisp
+  (add-hook 'after-init-hook 'global-company-mode)
+#+END_SRC
+
+This is a hack so that company mode plays nicely with the column limit vertical
+rule.
+
+#+BEGIN_SRC emacs-lisp
+  (defun on-off-fci-before-company(command)
+    (when (string= "show" command)
+      (turn-off-fci-mode))
+    (when (string= "hide" command)
+      (turn-on-fci-mode)))
+  (advice-add 'company-call-frontends :before #'on-off-fci-before-company)
+#+END_SRC
+
+* Languages
+
+** Haskell
+   
+I'm using dante as my "Haskell IDE".
+
+#+BEGIN_SRC emacs-lisp
+  (add-hook 'haskell-mode-hook 'dante-mode)
+
+  (put 'dante-target 'safe-local-variable 'stringp)
+
+  (setq dante-repl-command-line
+        '("cabal"
+          "new-repl"
+          dante-target
+          "--disable-optimization"
+          "--builddir=dist-newstyle/dante"))
+
+  (add-hook 'dante-mode-hook
+     '(lambda () (flycheck-add-next-checker 'haskell-dante
+                  '(info . haskell-hlint))))
+#+END_SRC
+
+These functions run the current line through the =ppsh= executable (part of
+[[https://hackage.haskell.org/package/pretty-show][pretty-show]]) and renders it as a nicely formatted and syntax highlighted haskell
+snippet. Useful when used in conjunction with =dante-eval-block= (=C-c "=).
+
+#+BEGIN_SRC emacs-lisp
+  (defun md/ppsh ()
+    (interactive)
+    (if (eq (char-after (line-beginning-position)) ?-)
+        (md/ppsh-offset 3)
+      (md/ppsh-offset 0)
+    ))
+
+  (defun md/ppsh-offset (offset)
+    (get-buffer-create "!ppsh-output")
+    (with-current-buffer "!ppsh-output"
+      (delay-mode-hooks
+        (haskell-mode)
+        (font-lock-mode))
+      (font-lock-ensure))
+    (shell-command-on-region (+ offset (line-beginning-position))
+                             (line-end-position)
+                             "ppsh"
+                             "!ppsh-output"))
+#+END_SRC
+
+No evil indent on open line since it interferes with haskell-mode:
+
+#+BEGIN_SRC emacs-lisp
+  (add-hook 'haskell-mode-hook
+    (lambda ()
+      (setq-local evil-auto-indent nil)))
+#+END_SRC
+
+** Rust
+
+#+BEGIN_SRC emacs-lisp
+  (setq racer-cmd "~/.cargo/bin/racer") ;; Rustup binaries PATH
+  (setq racer-rust-src-path "~/code/rust/src") ;; Rust source code PATH
+
+  (add-hook 'rust-mode-hook 'flycheck-mode)
+  (add-hook 'rust-mode-hook #'racer-mode)
+  (add-hook 'rust-mode-hook 'cargo-minor-mode)
+  (add-hook 'racer-mode-hook #'eldoc-mode)
+  (add-hook 'racer-mode-hook #'company-mode)
+  (add-hook 'flycheck-mode-hook #'flycheck-rust-setup)
+#+END_SRC
+
+** General
+
+*** Indentation
+
+#+BEGIN_SRC emacs-lisp
+  (setq tab-width 2)
+  (setq c-basic-offset 2)
+  (setq-default indent-tabs-mode nil)
+  (setq js-indent-level 2)
+#+END_SRC
+
+* Keybindings
+
+#+BEGIN_SRC emacs-lisp
+  (global-set-key (kbd "C-x g") 'magit-status)
+  (global-set-key (kbd "C-c c") 'org-capture)
+  (global-set-key (kbd "C-c f") 'counsel-recentf)
+  (global-set-key (kbd "C-c b") 'switch-to-buffer)
+  (global-set-key (kbd "C-c a") 'align-regexp)
+  (global-set-key (kbd "C-x C-j") 'dired-jump)
+  (global-set-key (kbd "C-c s") 'counsel-rg)
+  (global-set-key (kbd "C-c g") 'counsel-git)
+  (global-set-key (kbd "C-c C-/") 'evil-avy-goto-char-timer)
+  (global-set-key (kbd "C-c u") 'counsel-unicode-char)
+  (global-set-key (kbd "C-=") 'er/expand-region)
+  (global-set-key (kbd "C--") 'er/contract-region)
+  (with-eval-after-load 'evil-maps
+    (define-key evil-motion-state-map (kbd "C-]") 'xref-find-definitions)
+    (define-key evil-motion-state-map (kbd "/") 'swiper))
+#+END_SRC
+
+* Target Specific
+   
+#+BEGIN_SRC emacs-lisp
+  (defun get-last-rev (repo ref)
+    (interactive (list (read-string "Repo: ")
+                       (read-string "Branch: ")))
+    (insert (string-trim-right
+             (shell-command-to-string (format "github-query last-rev RedOptHaskell %s %s" repo ref)))))
+
+  (global-set-key (kbd "C-c C-l r") 'get-last-rev)
+
+  (defun get-last-release-tag (repo)
+    (interactive (list (read-string "Repo: ")))
+    (insert (string-trim-right
+             (shell-command-to-string (format "github-query last-release-tag RedOptHaskell %s" repo)))))
+
+  (global-set-key (kbd "C-c C-l t") 'get-last-release-tag)
+#+END_SRC
+
+Make writing =.org= files more pleasant:
+
+#+BEGIN_SRC emacs-lisp
+  (defun org-jira (ticket)
+    (interactive (list (read-string "Ticket: ")))
+    (insert (concat "[[https://jira.target.com/browse/" ticket "][" ticket "]]")))
+
+  (defun org-github-pr (repo pr)
+    (interactive (list (read-string "Repo: ")
+                       (read-string "PR: ")))
+    (insert (concat "[[https://git.target.com/RedOptHaskell/" repo "/pull/" pr "][" repo "#" pr "]]")))
+
+  (setenv "TGT_NIX_ALLOW_UNTAGGED_DEPS" "1")
+#+END_SRC
+
