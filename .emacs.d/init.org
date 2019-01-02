@@ -325,6 +325,7 @@ I'm using dante as my "Haskell IDE".
 
 #+BEGIN_SRC emacs-lisp
   (add-hook 'haskell-mode-hook 'dante-mode)
+  (add-hook 'haskell-mode-hook 'haskell-auto-insert-module-template)
 
   (put 'dante-target 'safe-local-variable 'stringp)
 
