@@ -75,6 +75,10 @@ Tuning the garbage collector threshold makes Emacs a bit snappier.
   (setq vc-follow-symlinks t)
 #+END_SRC
 
+#+BEGIN_SRC emacs-lisp
+  (setq recentf-max-saved-items 100000)
+#+END_SRC
+
 ** Column Limit
    
 This sets the column limit and adds a thin vertical ruler after the column
