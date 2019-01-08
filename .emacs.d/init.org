@@ -71,10 +71,8 @@ Tuning the garbage collector threshold makes Emacs a bit snappier.
 
 #+BEGIN_SRC emacs-lisp
   (setq gc-cons-threshold 20000000)
-#+END_SRC
-
-#+BEGIN_SRC emacs-lisp
   (setq require-final-newline t)
+  (setq vc-follow-symlinks t)
 #+END_SRC
 
 ** Column Limit
