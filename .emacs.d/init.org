@@ -79,6 +79,12 @@ Tuning the garbage collector threshold makes Emacs a bit snappier.
   (setq recentf-max-saved-items 100000)
 #+END_SRC
 
+Always remove trailing whitespace before saving.
+
+#+BEGIN_SRC emacs-lisp
+  (add-hook 'before-save-hook 'delete-trailing-whitespace)
+#+END_SRC
+
 ** Column Limit
    
 This sets the column limit and adds a thin vertical ruler after the column
