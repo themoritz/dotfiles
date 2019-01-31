@@ -23,7 +23,8 @@ in
     yaml-mode
     company
     flycheck
-    fill-column-indicator
+    #fill-column-indicator
+    wgrep
     # org-mode
     org-bullets
   ]) ++ (with epkgs.melpaPackages; [
@@ -33,9 +34,11 @@ in
     nix-mode
     evil-magit
     evil-surround
+    evil-collection
     engine-mode
     diminish
     expand-region
+    leuven-theme
     # Rust
     rust-mode
     flycheck-rust

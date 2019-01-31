@@ -31,11 +31,17 @@ Taken from [[https://github.com/TikhonJelvis/dotfiles/blob/e3877a96c7dbb42e34ddf
 * Theme
 
 #+BEGIN_SRC emacs-lisp
-  (load-theme 'monokai t)
+  (load-theme 'leuven t)
+#+END_SRC
+
+#+BEGIN_SRC emacs-lisp
+  (set-face-attribute 'default nil :height 140)
+  ;(set-face-attribute 'default nil :font "Fira Code Retina")
+  (set-face-attribute 'default nil :font "Iosevka")
 #+END_SRC
 
 * Better Defaults
-  
+
 Get rid of the annoying splash screen and bell.
 
 #+BEGIN_SRC emacs-lisp
@@ -85,19 +91,26 @@ Always remove trailing whitespace before saving.
   (add-hook 'before-save-hook 'delete-trailing-whitespace)
 #+END_SRC
 
+Truncate long lines
+
+#+BEGIN_SRC emacs-lisp
+  (set-default 'truncate-lines t)
+  (set-display-table-slot standard-display-table 0 ?→)
+#+END_SRC
+
 ** Column Limit
-   
+
 This sets the column limit and adds a thin vertical ruler after the column
 limit.
 
  #+BEGIN_SRC emacs-lisp
    (setq-default fill-column 80)
-   (setq-default fci-rule-width 1)
-   (add-hook 'prog-mode-hook 'turn-on-fci-mode)
+   ; (setq-default fci-rule-width 1)
+   ; (add-hook 'prog-mode-hook 'turn-on-fci-mode)
  #+END_SRC
 
 * General Modes
-  
+
 ** direnv-mode
 
 #+BEGIN_SRC emacs-lisp
@@ -116,12 +129,14 @@ limit.
 
 #+BEGIN_SRC emacs-lisp
   (setq evil-want-C-u-scroll t)
+  (setq evil-want-C-d-scroll t)
   (evil-mode)
   (global-evil-surround-mode 1)
+  (evil-collection-init 'dired 'company 'ivy 'wgrep)
 #+END_SRC
 
 ** magit
-   
+
 Make magit play nicely with evil mode.
 
 #+BEGIN_SRC emacs-lisp
@@ -155,7 +170,7 @@ Trim long lines of =counsel-rg= (=C-c s=) for performance reasons.
 #+END_SRC
 
 ** diminish
-   
+
 I don't want to see the modes that I always have on on my modeline.
 
 #+BEGIN_SRC emacs-lisp
@@ -181,13 +196,6 @@ I don't want to see the modes that I always have on on my modeline.
 
 ** hydras
 
-#+BEGIN_SRC emacs-lisp
-  (defhydra hydra-zoom (global-map "<f2>")
-    "zoom"
-    ("g" text-scale-increase "in")
-    ("l" text-scale-decrease "out"))
-#+END_SRC
-
 A hydra to control windows. Keybindings are similar to Vim's window handling.
 
 #+BEGIN_SRC emacs-lisp
@@ -209,13 +217,12 @@ A hydra to control windows. Keybindings are similar to Vim's window handling.
              (split-window-below)
              (windmove-down))
        "horiz")
-      ("o" delete-other-windows "one")
       ("C-w" ace-window "ace")
       ("s" ace-swap-window "swap")
       ("d" ace-delete-window "del")
-      ("i" ace-maximize-window "ace-one")
-      ("b" ivy-switch-buffer "buf")
-      ("q" nil "quit")))
+      ("m" delete-other-windows "max")
+      ("q" nil)))
+  (hydra-set-property 'hydra-window :verbosity 1)
 #+END_SRC
 
 Unset evil's window manipulation bindings for our window hydra to work.
@@ -229,7 +236,7 @@ Unset evil's window manipulation bindings for our window hydra to work.
 #+END_SRC
 
 ** engine-mode
-   
+
 Shortcut is =C-x /= followed by the =:keybinding=.
 
 #+BEGIN_SRC emacs-lisp
@@ -243,7 +250,7 @@ Shortcut is =C-x /= followed by the =:keybinding=.
 #+END_SRC
 
 ** flycheck-mode
-   
+
 Flycheck mode must come before the dante-mode hook (see
 https://github.com/jyp/dante/issues/58).
 
@@ -251,10 +258,24 @@ https://github.com/jyp/dante/issues/58).
   (add-hook 'haskell-mode-hook 'flycheck-mode)
 #+END_SRC
 
+#+BEGIN_SRC emacs-lisp
+  (add-hook 'flycheck-mode-hook
+            (lambda ()
+              (local-set-key (kbd "M-p") #'flycheck-previous-error)
+              (local-set-key (kbd "M-n") #'flycheck-next-error)))
+#+END_SRC
+
 ** org-mode
 
 #+BEGIN_SRC emacs-lisp
-  (add-hook 'org-mode-hook #'org-bullets-mode)
+  ;(add-hook 'org-mode-hook #'org-bullets-mode)
+#+END_SRC
+
+Fontify the whole line for headings (with a background color). Used by leuven
+theme.
+
+#+BEGIN_SRC emacs-lisp
+(setq org-fontify-whole-heading-line t)
 #+END_SRC
 
 #+BEGIN_SRC emacs-lisp
@@ -312,18 +333,18 @@ This is a hack so that company mode plays nicely with the column limit vertical
 rule.
 
 #+BEGIN_SRC emacs-lisp
-  (defun on-off-fci-before-company(command)
-    (when (string= "show" command)
-      (turn-off-fci-mode))
-    (when (string= "hide" command)
-      (turn-on-fci-mode)))
-  (advice-add 'company-call-frontends :before #'on-off-fci-before-company)
+  ;(defun on-off-fci-before-company(command)
+  ;  (when (string= "show" command)
+  ;    (turn-off-fci-mode))
+  ;  (when (string= "hide" command)
+  ;    (turn-on-fci-mode)))
+  ;(advice-add 'company-call-frontends :before #'on-off-fci-before-company)
 #+END_SRC
 
 * Languages
 
 ** Haskell
-   
+
 I'm using dante as my "Haskell IDE".
 
 #+BEGIN_SRC emacs-lisp
@@ -417,13 +438,15 @@ No evil indent on open line since it interferes with haskell-mode:
   (global-set-key (kbd "C-c u") 'counsel-unicode-char)
   (global-set-key (kbd "C-=") 'er/expand-region)
   (global-set-key (kbd "C--") 'er/contract-region)
+  (global-set-key (kbd "M-=") 'text-scale-increase)
+  (global-set-key (kbd "M--") 'text-scale-decrease)
   (with-eval-after-load 'evil-maps
     (define-key evil-motion-state-map (kbd "C-]") 'xref-find-definitions)
     (define-key evil-motion-state-map (kbd "/") 'swiper))
 #+END_SRC
 
 * Target Specific
-   
+
 #+BEGIN_SRC emacs-lisp
   (defun get-last-rev (repo ref)
     (interactive (list (read-string "Repo: ")
@@ -456,3 +479,8 @@ Make writing =.org= files more pleasant:
   (setenv "TGT_NIX_ALLOW_UNTAGGED_DEPS" "1")
 #+END_SRC
 
+Use nix-mode for our elab files (best approximation).
+
+#+BEGIN_SRC emacs-lisp
+  (add-to-list 'auto-mode-alist '("\\.elab\\'" . nix-mode))
+#+END_SRC
