@@ -132,7 +132,7 @@ limit.
   (setq evil-want-C-d-scroll t)
   (evil-mode)
   (global-evil-surround-mode 1)
-  (evil-collection-init 'dired 'company 'ivy 'wgrep)
+  (evil-collection-init `(dired company ivy wgrep))
 #+END_SRC
 
 ** magit
