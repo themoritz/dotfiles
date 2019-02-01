@@ -12,13 +12,17 @@ This file assumes that all packages were already installed. I'm doing this using
 #+END_SRC
 
 * Mac Hacks
-  
+
 Taken from [[https://github.com/TikhonJelvis/dotfiles/blob/e3877a96c7dbb42e34ddf6a907449fc05b3ed108/.emacs#L12][Tikhon Jelvis]]:
 
 #+BEGIN_SRC emacs-lisp
   (when (eq system-type 'darwin)
     (setq mac-command-modifier 'meta)
     (setq mac-option-modifier nil)
+    (setq ls-lisp-use-insert-directory-program nil) ; Avoid "Listing directory
+                                                    ; failed but 'access-file'
+                                                    ; worked" error in dired for
+                                                    ; some directories.
     (let ((nix-vars '("NIX_LINK"
                       "NIX_PATH"
                       "SSL_CERT_FILE")))
