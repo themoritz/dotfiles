@@ -9,6 +9,7 @@ ln -s dotfiles/.emacs .
 mkdir -p ~/.emacs.d
 cd ~/.emacs.d
 ln -s ../dotfiles/.emacs.d/init.org .
+ln -s ../dotfiles/.emacs.d/snippets .
 
 mkdir -p ~/.config
 cd ~/.config

@@ -17,7 +17,6 @@ in
     hydra
     counsel
     swiper
-    powerline
     direnv
     markdown-mode
     yaml-mode
@@ -39,6 +38,8 @@ in
     diminish
     expand-region
     leuven-theme
+    powerline
+    yasnippet
     # Rust
     rust-mode
     flycheck-rust

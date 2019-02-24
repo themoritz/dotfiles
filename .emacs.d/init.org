@@ -299,7 +299,7 @@ theme.
         (concat (org-file-path "archive.org") "::* From %s"))
   (setq org-agenda-files (list org-index-file))
   (setq org-todo-keywords
-    '((sequence "TODO" "WAITING" "|" "DONE")))
+    '((sequence "TODO" "WAIT" "|" "DONE")))
 #+END_SRC
 
 #+BEGIN_SRC emacs-lisp
@@ -343,6 +343,22 @@ rule.
   ;  (when (string= "hide" command)
   ;    (turn-on-fci-mode)))
   ;(advice-add 'company-call-frontends :before #'on-off-fci-before-company)
+#+END_SRC
+
+** yasnippet
+
+#+BEGIN_SRC emacs-lisp
+  (yas-global-mode 1)
+#+END_SRC
+
+I don't like when the text jumps around because the snippet fields have a border
+in the leuven theme, therefore disable it (overwriting the [[https://github.com/fniessen/emacs-leuven-theme/blob/24cad6f573833c987f5b4ef48c4230e37023e8e9/leuven-theme.el#L1010][original definition]]).
+
+#+BEGIN_SRC emacs-lisp
+  (let ((class '((class color) (min-colors 89))))
+    (custom-theme-set-faces
+     'leuven
+     `(yas-field-highlight-face ((,class (:foreground "black" :background "#D4DCD8"))))))
 #+END_SRC
 
 * Languages
