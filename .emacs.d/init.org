@@ -40,8 +40,14 @@ Taken from [[https://github.com/TikhonJelvis/dotfiles/blob/e3877a96c7dbb42e34ddf
 
 #+BEGIN_SRC emacs-lisp
   (set-face-attribute 'default nil :height 140)
-  ;(set-face-attribute 'default nil :font "Fira Code Retina")
   (set-face-attribute 'default nil :font "Iosevka")
+#+END_SRC
+
+Use ligatures (only works on the macport)
+
+#+BEGIN_SRC emacs-lisp
+  (when (eq system-type 'darwin)
+    (mac-auto-operator-composition-mode t))
 #+END_SRC
 
 * Better Defaults
