@@ -370,6 +370,9 @@ I'm using dante as my "Haskell IDE".
 #+BEGIN_SRC emacs-lisp
   (add-hook 'haskell-mode-hook 'dante-mode)
   (add-hook 'haskell-mode-hook 'haskell-auto-insert-module-template)
+  (add-hook 'haskell-mode-hook
+            (lambda ()
+              (local-set-key (kbd "M-s") #'haskell-mode-stylish-buffer)))
 
   (put 'dante-target 'safe-local-variable 'stringp)
 
