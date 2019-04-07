@@ -279,7 +279,7 @@ Fontify the whole line for headings (with a background color). Used by leuven
 theme.
 
 #+BEGIN_SRC emacs-lisp
-(setq org-fontify-whole-heading-line t)
+  (setq org-fontify-whole-heading-line t)
 #+END_SRC
 
 #+BEGIN_SRC emacs-lisp
@@ -289,11 +289,10 @@ theme.
 #+END_SRC
 
 #+BEGIN_SRC emacs-lisp
-  (setq org-directory "~/org")
+  (setq org-directory "~/Dropbox/org")
   (defun org-file-path (filename)
     "Return the absolute address of an org file, given its relative name."
     (concat (file-name-as-directory org-directory) filename))
-  (setq org-inbox-file (org-file-path "inbox.org"))
   (setq org-index-file (org-file-path "index.org"))
   (setq org-archive-location
         (concat (org-file-path "archive.org") "::* From %s"))
@@ -303,9 +302,31 @@ theme.
 #+END_SRC
 
 #+BEGIN_SRC emacs-lisp
-
   (setq org-refile-use-outline-path t)
   (setq org-outline-path-complete-in-steps nil)
+#+END_SRC
+
+Mark items done and archive
+
+#+BEGIN_SRC emacs-lisp
+  (defun md/mark-done-and-archive ()
+    "Mark the state of an org-mode item as DONE and archive it."
+    (interactive)
+    (org-todo 'done)
+    (org-archive-subtree))
+
+  (define-key org-mode-map (kbd "C-c C-x C-a") 'md/mark-done-and-archive)
+#+END_SRC
+
+Quickly open index file
+
+#+BEGIN_SRC emacs-lisp
+  (defun md/open-index-file ()
+    "Open the master org TODO list."
+    (interactive)
+    (find-file org-index-file))
+
+  (global-set-key (kbd "C-c i") 'md/open-index-file)
 #+END_SRC
 
 org-capture
