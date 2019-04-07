@@ -445,6 +445,22 @@ No evil indent on open line since it interferes with haskell-mode:
 
 * Keybindings
 
+#+begin_src emacs-lisp
+  (defun md/word-backwards ()
+    "Move word backwards."
+    (interactive)
+    (backward-to-word 1)
+    (transpose-words 1)
+    (backward-word-strictly 2))
+
+  (defun md/word-forward ()
+    "Move word forward."
+    (interactive)
+    (forward-to-word 1)
+    (transpose-words 1)
+    (backward-word))
+#+END_SRC
+
 #+BEGIN_SRC emacs-lisp
   (global-set-key (kbd "C-x g") 'magit-status)
   (global-set-key (kbd "C-c c") 'org-capture)
@@ -460,8 +476,11 @@ No evil indent on open line since it interferes with haskell-mode:
   (global-set-key (kbd "C--") 'er/contract-region)
   (global-set-key (kbd "M-=") 'text-scale-increase)
   (global-set-key (kbd "M--") 'text-scale-decrease)
+  (global-set-key (kbd "M-H") 'md/word-backwards)
+  (global-set-key (kbd "M-L") 'md/word-forward)
   (with-eval-after-load 'evil-maps
     (define-key evil-motion-state-map (kbd "C-]") 'xref-find-definitions)
+    (define-key evil-motion-state-map (kbd "M-?") 'xref-find-references)
     (define-key evil-motion-state-map (kbd "/") 'swiper))
 #+END_SRC
 
