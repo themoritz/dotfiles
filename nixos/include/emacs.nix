@@ -45,6 +45,8 @@ in
     flycheck-rust
     racer
     cargo
+    neotree
+    all-the-icons
   ] ++
   (if isDarwin
   then [exec-path-from-shell]

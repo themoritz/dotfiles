@@ -142,7 +142,7 @@ limit.
   (setq evil-want-C-d-scroll t)
   (evil-mode)
   (global-evil-surround-mode 1)
-  (evil-collection-init `(dired company ivy wgrep))
+  (evil-collection-init `(dired company ivy wgrep neotree))
 #+END_SRC
 
 ** magit
@@ -386,6 +386,34 @@ in the leuven theme, therefore disable it (overwriting the [[https://github.com/
     (custom-theme-set-faces
      'leuven
      `(yas-field-highlight-face ((,class (:foreground "black" :background "#D4DCD8"))))))
+#+END_SRC
+
+** diminish
+
+I don't want to see the modes that I always have on on my modeline.
+
+#+BEGIN_SRC emacs-lisp
+  (diminish 'ivy-mode)
+  (diminish 'undo-tree-mode)
+  (diminish 'company-mode)
+  (diminish 'flycheck-mode)
+  (diminish 'eldoc-mode)
+  (diminish 'auto-revert-mode)
+  (diminish 'yas-minor-mode)
+#+END_SRC
+
+** undo-tree
+
+Fixes "unrecognized entry in undo list" [[https://www.reddit.com/r/emacs/comments/85t95p/undo_tree_unrecognized_entry_in_undo_list/][according to reddit]].
+
+#+BEGIN_SRC emacs-lisp
+  (setq undo-tree-enable-undo-in-region nil)
+#+END_SRC
+
+** neotree
+
+#+BEGIN_SRC emacs-lisp
+  (setq neo-theme (if (display-graphic-p) 'icons 'arrow))
 #+END_SRC
 
 * Languages
