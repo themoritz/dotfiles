@@ -1,0 +1,9 @@
+robbyrussell/oh-my-zsh path:lib/theme-and-appearance.zsh
+robbyrussell/oh-my-zsh path:lib/git.zsh
+
+Tarrasch/zsh-bd
+chisui/zsh-nix-shell
+spwhitt/nix-zsh-completions
+rupa/z
+zsh-users/zsh-completions
+themoritz/lambda-gitster
