@@ -7,14 +7,9 @@ let
 
 in
   emacsWithPackages (epkgs: (with epkgs.melpaStablePackages; [
-    ace-window
     avy
     magit
-    monokai-theme
-    evil
     ivy
-    ivy-hydra
-    hydra
     counsel
     swiper
     direnv
@@ -22,19 +17,13 @@ in
     yaml-mode
     company
     flycheck
-    #fill-column-indicator
+    which-key
     wgrep
-    # org-mode
-    org-bullets
   ]) ++ (with epkgs.melpaPackages; [
     haskell-mode
     dhall-mode
     dante
     nix-mode
-    evil-magit
-    evil-surround
-    evil-collection
-    engine-mode
     diminish
     expand-region
     leuven-theme
@@ -45,8 +34,6 @@ in
     flycheck-rust
     racer
     cargo
-    neotree
-    all-the-icons
   ] ++
   (if isDarwin
   then [exec-path-from-shell]

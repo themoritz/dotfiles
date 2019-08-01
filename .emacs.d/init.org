@@ -17,8 +17,9 @@ Taken from [[https://github.com/TikhonJelvis/dotfiles/blob/e3877a96c7dbb42e34ddf
 
 #+BEGIN_SRC emacs-lisp
   (when (eq system-type 'darwin)
-    (setq mac-command-modifier 'meta)
-    (setq mac-option-modifier nil)
+    (setq mac-command-modifier 'control)
+    (setq mac-option-modifier 'meta)
+    (require 'ls-lisp)
     (setq ls-lisp-use-insert-directory-program nil) ; Avoid "Listing directory
                                                     ; failed but 'access-file'
                                                     ; worked" error in dired for
@@ -29,7 +30,6 @@ Taken from [[https://github.com/TikhonJelvis/dotfiles/blob/e3877a96c7dbb42e34ddf
       (when (memq window-system '(mac ns))
         (exec-path-from-shell-initialize) ; $PATH, $MANPATH and set exec-path
         (mapcar 'exec-path-from-shell-copy-env nix-vars))))
-
 #+END_SRC
 
 * Theme
@@ -108,6 +108,12 @@ Truncate long lines
   (set-display-table-slot standard-display-table 0 ?→)
 #+END_SRC
 
+Always use undo-tree.
+
+#+BEGIN_SRC emacs-lisp
+  (global-undo-tree-mode)
+#+END_SRC
+
 ** Column Limit
 
 This sets the column limit and adds a thin vertical ruler after the column
@@ -135,25 +141,6 @@ limit.
   (powerline-default-theme)
 #+END_SRC
 
-** evil-mode
-
-#+BEGIN_SRC emacs-lisp
-  (setq evil-want-C-u-scroll t)
-  (setq evil-want-C-d-scroll t)
-  (evil-mode)
-  (global-evil-surround-mode 1)
-  (evil-collection-init `(dired company ivy wgrep neotree))
-#+END_SRC
-
-** magit
-
-Make magit play nicely with evil mode.
-
-#+BEGIN_SRC emacs-lisp
-  (evil-magit-init)
-  (add-hook 'with-editor-mode-hook 'evil-insert-state)
-#+END_SRC
-
 ** dired
 
 #+BEGIN_SRC emacs-lisp
@@ -169,7 +156,6 @@ Make magit play nicely with evil mode.
 
 #+BEGIN_SRC emacs-lisp
   (ivy-mode)
-  (evil-set-initial-state 'ivy-occur-mode 'normal)
 #+END_SRC
 
 Trim long lines of =counsel-rg= (=C-c s=) for performance reasons.
@@ -196,67 +182,6 @@ I don't want to see the modes that I always have on on my modeline.
 
 #+BEGIN_SRC emacs-lisp
   (show-paren-mode t)
-#+END_SRC
-
-** ace-window
-
-#+BEGIN_SRC emacs-lisp
-  (setq aw-keys '(?a ?s ?d ?f ?g ?h ?j ?k ?l))
-#+END_SRC
-
-** hydras
-
-A hydra to control windows. Keybindings are similar to Vim's window handling.
-
-#+BEGIN_SRC emacs-lisp
-  (global-set-key
-    (kbd "C-w")
-    (defhydra hydra-window (:color blue)
-      "window"
-      ("h" windmove-left)
-      ("l" windmove-right)
-      ("j" windmove-down)
-      ("k" windmove-up)
-      ("v" (lambda ()
-             (interactive)
-             (split-window-right)
-             (windmove-right))
-       "vert")
-      ("x" (lambda ()
-             (interactive)
-             (split-window-below)
-             (windmove-down))
-       "horiz")
-      ("C-w" ace-window "ace")
-      ("s" ace-swap-window "swap")
-      ("d" ace-delete-window "del")
-      ("m" delete-other-windows "max")
-      ("q" nil)))
-  (hydra-set-property 'hydra-window :verbosity 1)
-#+END_SRC
-
-Unset evil's window manipulation bindings for our window hydra to work.
-
-#+BEGIN_SRC emacs-lisp
-  (with-eval-after-load 'evil-maps
-    (dolist (map '(evil-motion-state-map
-                   evil-insert-state-map
-                   evil-emacs-state-map))
-      (define-key (eval map) "\C-w" nil)))
-#+END_SRC
-
-** engine-mode
-
-Shortcut is =C-x /= followed by the =:keybinding=.
-
-#+BEGIN_SRC emacs-lisp
-  (engine-mode t)
-  (defengine duckduckgo
-    "https://duckduckgo.com/?q=%s"
-    :keybinding "d")
-  (defengine hayoo
-    "https://hayoo.fh-wedel.de/?query=%s"
-    :keybinding "h")
 #+END_SRC
 
 ** flycheck-mode
@@ -351,25 +276,12 @@ org-capture
            entry
            (file+headline org-index-file "Inbox")
            "* TODO %?\n")))
-  (add-hook 'org-capture-mode-hook 'evil-insert-state)
 #+END_SRC
 
 ** company-mode
 
 #+BEGIN_SRC emacs-lisp
   (add-hook 'after-init-hook 'global-company-mode)
-#+END_SRC
-
-This is a hack so that company mode plays nicely with the column limit vertical
-rule.
-
-#+BEGIN_SRC emacs-lisp
-  ;(defun on-off-fci-before-company(command)
-  ;  (when (string= "show" command)
-  ;    (turn-off-fci-mode))
-  ;  (when (string= "hide" command)
-  ;    (turn-on-fci-mode)))
-  ;(advice-add 'company-call-frontends :before #'on-off-fci-before-company)
 #+END_SRC
 
 ** yasnippet
@@ -414,6 +326,12 @@ Fixes "unrecognized entry in undo list" [[https://www.reddit.com/r/emacs/comment
 
 #+BEGIN_SRC emacs-lisp
   (setq neo-theme (if (display-graphic-p) 'icons 'arrow))
+#+END_SRC
+
+** which-key
+
+#+BEGIN_SRC emacs-lisp
+  (which-key-mode)
 #+END_SRC
 
 * Languages
@@ -468,19 +386,10 @@ snippet. Useful when used in conjunction with =dante-eval-block= (=C-c "=).
                              "!ppsh-output"))
 #+END_SRC
 
-No evil indent on open line since it interferes with haskell-mode:
-
-#+BEGIN_SRC emacs-lisp
-  (add-hook 'haskell-mode-hook
-    (lambda ()
-      (setq-local evil-auto-indent nil)))
-#+END_SRC
-
 ** Rust
 
 #+BEGIN_SRC emacs-lisp
   (setq racer-cmd "~/.cargo/bin/racer") ;; Rustup binaries PATH
-  (setq racer-rust-src-path "~/code/rust/src") ;; Rust source code PATH
 
   (add-hook 'rust-mode-hook 'flycheck-mode)
   (add-hook 'rust-mode-hook #'racer-mode)
@@ -520,26 +429,21 @@ No evil indent on open line since it interferes with haskell-mode:
 #+END_SRC
 
 #+BEGIN_SRC emacs-lisp
+  (global-set-key "\C-s" 'swiper)
   (global-set-key (kbd "C-x g") 'magit-status)
   (global-set-key (kbd "C-c c") 'org-capture)
   (global-set-key (kbd "C-c f") 'counsel-recentf)
-  (global-set-key (kbd "C-c b") 'switch-to-buffer)
   (global-set-key (kbd "C-c a") 'align-regexp)
   (global-set-key (kbd "C-x C-j") 'dired-jump)
   (global-set-key (kbd "C-c s") 'counsel-rg)
   (global-set-key (kbd "C-c g") 'counsel-git)
-  (global-set-key (kbd "C-c C-/") 'evil-avy-goto-char-timer)
   (global-set-key (kbd "C-c u") 'counsel-unicode-char)
   (global-set-key (kbd "C-=") 'er/expand-region)
   (global-set-key (kbd "C--") 'er/contract-region)
   (global-set-key (kbd "M-=") 'text-scale-increase)
   (global-set-key (kbd "M--") 'text-scale-decrease)
-  (global-set-key (kbd "M-H") 'md/word-backwards)
-  (global-set-key (kbd "M-L") 'md/word-forward)
-  (with-eval-after-load 'evil-maps
-    (define-key evil-motion-state-map (kbd "C-]") 'xref-find-definitions)
-    (define-key evil-motion-state-map (kbd "M-?") 'xref-find-references)
-    (define-key evil-motion-state-map (kbd "/") 'swiper))
+  ;(global-set-key (kbd "M-H") 'md/word-backwards)
+  ;(global-set-key (kbd "M-L") 'md/word-forward)
 #+END_SRC
 
 * Target Specific
