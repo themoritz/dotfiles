@@ -202,10 +202,6 @@ https://github.com/jyp/dante/issues/58).
 
 ** org-mode
 
-#+BEGIN_SRC emacs-lisp
-  ;(add-hook 'org-mode-hook #'org-bullets-mode)
-#+END_SRC
-
 Fontify the whole line for headings (with a background color). Used by leuven
 theme.
 
@@ -229,24 +225,12 @@ theme.
         (concat (org-file-path "archive.org") "::* From %s"))
   (setq org-agenda-files (list org-index-file))
   (setq org-todo-keywords
-    '((sequence "TODO" "WAIT" "|" "DONE")))
+    '((sequence "TODO" "PROG" "WAIT" "APPT" "|" "DONE" "CANC" "DEFR")))
 #+END_SRC
 
 #+BEGIN_SRC emacs-lisp
-  (setq org-refile-use-outline-path t)
+  (setq org-refile-use-outline-path file)
   (setq org-outline-path-complete-in-steps nil)
-#+END_SRC
-
-Mark items done and archive
-
-#+BEGIN_SRC emacs-lisp
-  (defun md/mark-done-and-archive ()
-    "Mark the state of an org-mode item as DONE and archive it."
-    (interactive)
-    (org-todo 'done)
-    (org-archive-subtree))
-
-  (define-key org-mode-map (kbd "C-c C-x C-a") 'md/mark-done-and-archive)
 #+END_SRC
 
 Quickly open index file
@@ -264,18 +248,26 @@ org-capture
 
 #+BEGIN_SRC emacs-lisp
   (setq org-capture-templates
-        '(("e" "Email" entry
-           (file+headline org-index-file "Inbox")
-           "* TODO %?\n\n%a\n\n")
-
-          ("r" "Reading"
+        '(("r" "Reading"
            checkitem
            (file (org-file-path "to-read.org")))
+
+          ("m" "Meeting Notes"
+           entry
+           (file+olp org-index-file "Inbox" "Meeting Notes")
+           "* %^{Title}\nSCHEDULED: %t\n\n%?\n")
 
           ("t" "Todo"
            entry
            (file+headline org-index-file "Inbox")
            "* TODO %?\n")))
+#+END_SRC
+
+org-agenda
+
+#+BEGIN_SRC emacs-lisp
+  (setq org-agenda-custom-commands
+        '(("w" todo "WAIT")))
 #+END_SRC
 
 ** company-mode
@@ -432,8 +424,9 @@ snippet. Useful when used in conjunction with =dante-eval-block= (=C-c "=).
   (global-set-key "\C-s" 'swiper)
   (global-set-key (kbd "C-x g") 'magit-status)
   (global-set-key (kbd "C-c c") 'org-capture)
+  (global-set-key (kbd "C-c a") 'org-agenda)
   (global-set-key (kbd "C-c f") 'counsel-recentf)
-  (global-set-key (kbd "C-c a") 'align-regexp)
+  (global-set-key (kbd "C-c C-a") 'align-regexp)
   (global-set-key (kbd "C-x C-j") 'dired-jump)
   (global-set-key (kbd "C-c s") 'counsel-rg)
   (global-set-key (kbd "C-c g") 'counsel-git)
