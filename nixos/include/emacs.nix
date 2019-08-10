@@ -29,6 +29,7 @@ in
     leuven-theme
     powerline
     yasnippet
+    default-text-scale
     # Rust
     rust-mode
     flycheck-rust
