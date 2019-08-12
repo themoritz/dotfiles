@@ -10,6 +10,7 @@ in
     avy
     magit
     ivy
+    ivy-prescient
     counsel
     swiper
     direnv
