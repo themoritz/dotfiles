@@ -27,7 +27,6 @@ in
     diminish
     expand-region
     leuven-theme
-    powerline
     yasnippet
     default-text-scale
     # Rust
