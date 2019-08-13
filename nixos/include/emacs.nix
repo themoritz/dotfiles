@@ -17,6 +17,7 @@ in
     markdown-mode
     yaml-mode
     company
+    company-prescient
     flycheck
     which-key
     wgrep

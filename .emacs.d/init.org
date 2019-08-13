@@ -157,6 +157,7 @@ limit.
 #+BEGIN_SRC emacs-lisp
   (ivy-mode)
   (ivy-prescient-mode)
+  (prescient-persist-mode)
 #+END_SRC
 
 Trim long lines of =counsel-rg= (=C-c s=) for performance reasons.
@@ -284,6 +285,7 @@ org-agenda
 
 #+BEGIN_SRC emacs-lisp
   (add-hook 'after-init-hook 'global-company-mode)
+  (company-prescient-mode)
 #+END_SRC
 
 ** yasnippet
