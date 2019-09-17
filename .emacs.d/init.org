@@ -4,6 +4,12 @@
 
 * Initialization
 
+Custom lisp code lives here:
+
+#+BEGIN_SRC emacs-lisp
+  (add-to-list 'load-path "~/.emacs.d/lisp/")
+#+END_SRC
+
 This file assumes that all packages were already installed. I'm doing this using
 [[https://nixos.org/nixpkgs/manual/#sec-emacs][Nix's emacsWithPackages]].
 
@@ -407,6 +413,13 @@ snippet. Useful when used in conjunction with =dante-eval-block= (=C-c "=).
   (add-hook 'racer-mode-hook #'eldoc-mode)
   (add-hook 'racer-mode-hook #'company-mode)
   (add-hook 'flycheck-mode-hook #'flycheck-rust-setup)
+#+END_SRC
+
+** Theta
+
+#+BEGIN_SRC emacs-lisp
+  (require 'theta-mode)
+  (add-to-list 'auto-mode-alist '("\\.theta" . theta-mode))
 #+END_SRC
 
 ** General

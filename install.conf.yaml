@@ -13,6 +13,7 @@
     ~/.emacs: .emacs
     ~/.emacs.d/init.org: .emacs.d/init.org
     ~/.emacs.d/snippets: .emacs.d/snippets
+    ~/.emacs.d/lisp: .emacs.d/lisp
 
 - shell:
     - nix-env -i antibody
