@@ -31,6 +31,8 @@ in
     leuven-theme
     yasnippet
     default-text-scale
+    dumb-jump
+    restclient
     # Rust
     rust-mode
     flycheck-rust

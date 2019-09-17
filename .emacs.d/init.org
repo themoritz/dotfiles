@@ -350,6 +350,19 @@ Fixes "unrecognized entry in undo list" [[https://www.reddit.com/r/emacs/comment
   (default-text-scale-mode)
 #+END_SRC
 
+** Restclient
+
+#+BEGIN_SRC emacs-lisp
+  (add-to-list 'auto-mode-alist '("\\.http" . restclient-mode))
+#+END_SRC
+
+** Dumb Jump
+
+#+BEGIN_SRC emacs-lisp
+  (dumb-jump-mode)
+  (setq dumb-jump-selector 'ivy)
+#+END_SRC
+
 * Languages
 
 ** Haskell
