@@ -126,19 +126,26 @@ Always show column numbers in the default mode line.
   (column-number-mode)
 #+END_SRC
 
-** Column Limit
-
 This sets the column limit and adds a thin vertical ruler after the column
 limit.
 
- #+BEGIN_SRC emacs-lisp
-   (setq-default fill-column 80)
-   ; (setq-default fci-rule-width 1)
-   ; (add-hook 'prog-mode-hook 'turn-on-fci-mode)
- #+END_SRC
+#+BEGIN_SRC emacs-lisp
+  (setq-default fill-column 80)
+#+END_SRC
+
+Bind =C-w= to unix-style backwards delete word if there's no active region.
+
+#+BEGIN_SRC emacs-lisp
+  (defun md/kill-region-or-backward-word ()
+    (interactive)
+    (if (use-region-p)
+        (kill-region (point) (mark))
+      (backward-kill-word 1)))
+
+  (global-set-key (kbd "C-w") 'md/kill-region-or-backward-word)
+#+END_SRC
 
 * General Modes
-
 ** direnv-mode
 
 #+BEGIN_SRC emacs-lisp
@@ -271,13 +278,19 @@ org-capture
 
           ("m" "Meeting Notes"
            entry
-           (file+olp org-index-file "Inbox" "Meeting Notes")
+           (file+olp org-index-file "Meeting Notes")
            "* %^{Title}\nSCHEDULED: %t\n\n%?\n")
 
           ("t" "Todo"
            entry
            (file+headline org-index-file "Inbox")
-           "* TODO %?\n")))
+           "* TODO %?\n")
+
+          ;; TODO: Prompt person to discuss with
+          ("d" "Discuss"
+           item
+           (file+olp org-index-file "Inbox")
+           "%?\n")))
 #+END_SRC
 
 org-agenda
@@ -287,6 +300,12 @@ org-agenda
         '(("w" todo "WAIT")))
 #+END_SRC
 
+Projects
+
+#+BEGIN_SRC emacs-lisp
+  (setq org-stuck-projects
+        '("+PROJECT/-TODO" ("TODO")))
+#+END_SRC
 ** company-mode
 
 #+BEGIN_SRC emacs-lisp
