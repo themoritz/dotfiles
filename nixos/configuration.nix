@@ -3,7 +3,7 @@
 let
   myvim = import ./include/vim.nix { inherit pkgs; };
   myemacs = import ./include/emacs.nix { inherit pkgs; };
-  latex = pkgs.texlive.combine { inherit (pkgs.texlive)
+  mylatex = pkgs.texlive.combine { inherit (pkgs.texlive)
     scheme-small
     lato
     slantsc
@@ -33,6 +33,7 @@ in
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
   boot.loader.grub.device = "/dev/sda";
+  boot.kernelPackages = pkgs.linuxPackages_5_3;
 
   networking = {
     hostName = "moritz.local"; # .local to prevent emacs slow load bug
@@ -57,24 +58,16 @@ in
 
   environment = {
 
-    variables = {
-      ZSH = [ "${pkgs.oh-my-zsh}/share/oh-my-zsh" ];
-    };
-
     systemPackages = with pkgs; [
       arandr
       baobab
-      bashInteractive
       bashmount
-      calibre
       cloc
       direnv
       dropbox-cli
       dropbox
       evince
-      firefox
       fzf
-      ghc
       git
       gimp
       gnumake
@@ -85,23 +78,22 @@ in
       ntfs3g # read-only filesystem issue
       keepassxc
       imagemagick
-      libreoffice
       stack
-      haskellPackages.hlint
-      # haskellPackages.idris # doesn't build
-      latex
       mongodb-tools
+      mylatex
       myemacs
       myvim
       gnome3.nautilus
       nixops
       nodejs
-      octave
       pavucontrol
       slack
       tree
+      tldr
       vlc
       wget
+      zip
+      unzip
       # Window manager related:
       feh
       i3status
@@ -109,8 +101,6 @@ in
       dmenu
       networkmanagerapplet
       xdotool
-      zip
-      unzip
     ];
 
   };
