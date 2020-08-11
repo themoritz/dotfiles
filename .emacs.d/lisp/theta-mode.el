@@ -2,7 +2,7 @@
   (let ((table (make-syntax-table)))
 
     ;; _ is a word character in Theta
-    (modify-syntax-entry ?_ "w")
+    (modify-syntax-entry ?_ "w" table)
 
     ;; Brackets
     (modify-syntax-entry ?\[ "(]" table)
@@ -96,7 +96,8 @@
       (version (version-keyword ":" version-number))
       (version-keyword ("language-version")
                        ("avro-version"))
-      (version-number (id "." id "." id))
+      (version-separator (version "---" statement))
+      (version-number)
 
       (statement ("import" id)
                  ("type" type-definition)
@@ -111,49 +112,88 @@
       (fields (fields "," fields)
               (id ":" id)))
 
-    '((assoc "|"))
-    '((assoc "="))
+    '((assoc ":"))
     '((assoc ","))
-    '((assoc ":")))))
+    '((assoc "|"))
+    '((assoc "=")))))
 
 (defun theta-indentation-rules (kind token)
-  (progn
-    (print (cons kind token))
-    (pcase (cons kind token)
-      ;; The module header should not be indented at all.
-      (`(:before . "avro-version") '(column . 0))
-      (`(:before . "language-version") '(column . 0))
+  (pcase (cons kind token)
+    ;; The "---" token is used as a bit of a hack to force no
+    ;; indentation on the line.
+    (`(:elem . empty-line-token)
+     (cond
+      ((theta-point-in-record-p) ",")
+      ((theta-point-in-variant-p) "|")
+      (t "---")))
 
-      ;; Top-level keywords never need to be indented (declarations like
-      ;; `type Foo = ...` always start at the beginning of the line)
-      (`(:before . "type") '(column . 0))
-      (`(:before . "alias") '(column . 0))
-      (`(:before . "import") '(column . 0))
+    ;; The module header should not be indented at all.
+    (`(:before . "avro-version") '(column . 0))
+    (`(:before . "language-version") '(column . 0))
+    (`(:before . "---") '(column . 0))
 
-      ;; Introduce exactly one extra level of indentation after the =
-      ;; in `type Foo = ...` and `alias Foo = ...`
-      (`(:after . "=") theta-indent-level)
-      (`(:before . "=")
-       (if (smie-rule-hanging-p) 0 theta-indent-level))
+    ;; Top-level keywords never need to be indented (declarations like
+    ;; `type Foo = ...` always start at the beginning of the line)
+    (`(:before . "type") '(column . 0))
+    (`(:before . "alias") '(column . 0))
+    (`(:before . "import") '(column . 0))
 
-      ;; Don't introduce any indentation after a record or variant
-      ;; body.
-      ;;
-      ;; In a perfect world we would differentiate between records and
-      ;; variants here, but I can't figure out a way to do that as
-      ;; things stand now. (Maybe with a custom lexer that
-      ;; differentiates between the "}" in records and invariants?)
-      (`(:after . "}") (if (smie-rule-bolp) '(column . 0)))
+    ;; Introduce exactly one extra level of indentation after the =
+    ;; in `type Foo = ...` and `alias Foo = ...`
+    (`(:after . "=") theta-indent-level)
+    (`(:before . "=")
+     (if (smie-rule-hanging-p) 0 theta-indent-level))
 
-      ;; On lines like `type Foo = {`, don't introduce an extra level of
-      ;; indentation on the next line. (One level is introduced by the =
-      ;; already.)
-      (`(:before . "{")
-       (if (smie-rule-hanging-p) (smie-rule-parent)))
+    ;; On lines like `type Foo = {`, don't introduce an extra level of
+    ;; indentation on the next line. (One level is introduced by the =
+    ;; already.)
+    (`(:before . "{")
+     (if (smie-rule-hanging-p) (smie-rule-parent)))
 
-      ;; Align fields and variant cases to each other.
-      (`(:before . "|") (smie-rule-separator kind))
-      (`(:before . ",") (smie-rule-separator kind)))))
+    ;; Align fields and variant cases to each other.
+    (`(:before . "|") (smie-rule-separator kind))
+    (`(:before . ",") (smie-rule-separator kind))))
+
+(defun theta-point-in-record-p ()
+    "Returns whether the point is currently inside a record
+    body (ie the field definitions between { and }).
+
+    This includes both records and the record bodies of variant
+    cases."
+
+    (condition-case nil
+        (save-excursion
+          (re-search-backward "[{}]")
+          (eq (char-after) ?{))
+      (error nil)))
+
+(defun theta-previous-definition ()
+  "Returns the character location of the definition (type/alias
+  Foo = ...) that comes before the current point. If there is no
+  definition before the point, returns 0."
+  (condition-case nil
+      (save-excursion
+        (search-backward "=")
+        (point))
+    (error 0)))
+
+(defun theta-previous-variant-definition ()
+  "Returns the character location of the variant definition (type
+  Foo = Bar {...}) that comes before the current point. If there
+  is no definition before the point, returns 0."
+  (condition-case nil
+      (save-excursion
+        (re-search-backward "=[[:space:]\n]*\\w+[[:space:]\n]*{")
+        (point))
+    (error 0)))
+
+(defun theta-point-in-variant-p ()
+    "Returns whether the point is currently either between or
+    right after the case definitions in a variant."
+    (let ((previous-variant (theta-previous-variant-definition)))
+      (and (not (eq previous-variant 0))
+           (not (theta-point-in-record-p))
+           (eq (theta-previous-definition) previous-variant))))
 
                                         ; Mode Definition
 (define-derived-mode theta-mode prog-mode "Θ"
