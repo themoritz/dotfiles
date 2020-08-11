@@ -171,6 +171,13 @@ Bind =C-w= to unix-style backwards delete word if there's no active region.
   (ivy-mode)
   (ivy-prescient-mode)
   (prescient-persist-mode)
+
+  ;; See https://github.com/abo-abo/swiper#frequently-asked-questions
+  (setq ivy-use-selectable-prompt t)
+
+  ;; This fixes an issue where I would get `error code 2` when searching two words.
+  ;; see  https://github.com/raxod502/prescient.el/issues/43
+  (setf (alist-get 'counsel-rg ivy-re-builders-alist) #'ivy--regex-plus)
 #+END_SRC
 
 Trim long lines of =counsel-rg= (=C-c s=) for performance reasons.
@@ -452,6 +459,12 @@ snippet. Useful when used in conjunction with =dante-eval-block= (=C-c "=).
 #+BEGIN_SRC emacs-lisp
   (require 'theta-mode)
   (add-to-list 'auto-mode-alist '("\\.theta" . theta-mode))
+#+END_SRC
+
+** Kotlin
+
+#+BEGIN_SRC elisp
+  (setq kotlin-tab-width 4)
 #+END_SRC
 
 ** General

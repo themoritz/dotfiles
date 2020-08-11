@@ -33,6 +33,7 @@ in
     default-text-scale
     dumb-jump
     restclient
+    kotlin-mode
     # Rust
     rust-mode
     flycheck-rust
