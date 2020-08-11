@@ -1,6 +1,8 @@
 (setq vc-follow-symlinks t)
 ;; (org-babel-load-file "~/.emacs.d/init.org")
 
+;; Bootstrap straight.el (taken from getting started instructions)
+
 (setq-default straight-use-package-by-default t)
 
 (defvar bootstrap-version)
@@ -16,13 +18,13 @@
       (eval-print-last-sexp)))
   (load bootstrap-file nil 'nomessage))
 
-;;
-
 (straight-use-package 'use-package)
 
+;;
+
 (use-package diminish
-             :config
-             (diminish 'auto-revert-mode))
+  :config
+  :diminish auto-revert-mode)
 
 ;;
 
@@ -31,15 +33,21 @@
     :config
     (exec-path-from-shell-initialize)))
 
+;; Optics
+
 (use-package leuven-theme
-             :config
-             (load-theme 'leuven t))
+  :config
+  (load-theme 'leuven t))
 
 (set-face-attribute 'default nil :height 140)
 (set-face-attribute 'default nil :font "Iosevka")
 
+(show-paren-mode t)
+
+;; Better defaults
+
 (setq inhibit-splash-screen t)
-(setq ring-bell-function 'ignore) ; No bell
+(setq ring-bell-function 'ignore)
 
 (tool-bar-mode -1)
 (scroll-bar-mode -1)
@@ -74,57 +82,77 @@
 
 (global-set-key (kbd "C-c C-a") 'align-regexp)
 
+(defun md/scroll-down ()
+  (interactive)
+  (next-line 10))
+
+(defun md/scroll-up ()
+  (interactive)
+    (previous-line 10))
+
+(global-set-key (kbd "C-v") 'md/scroll-down)
+(global-set-key (kbd "M-v") 'md/scroll-up)
+
 ;;
 
 (use-package undo-tree
-             :diminish
-             :init
-             (setq undo-tree-enable-undo-in-region nil) ; Fixes "unrecognized entry in undo list" (https://www.reddit.com/r/emacs/comments/85t95p/undo_tree_unrecognized_entry_in_undo_list/).
-             :config
-             (global-undo-tree-mode))
+  :diminish
+  :init
+  (setq undo-tree-enable-undo-in-region nil) ; Fixes "unrecognized entry in undo list" (https://www.reddit.com/r/emacs/comments/85t95p/undo_tree_unrecognized_entry_in_undo_list/).
+  :config
+  (global-undo-tree-mode))
 
 (use-package direnv
-             :config
-             (setq direnv-show-paths-in-summary nil)
-             (setq direnv-always-show-summary nil)
-             (direnv-mode))
+  :config
+  (setq direnv-show-paths-in-summary nil)
+  (setq direnv-always-show-summary nil)
+  (direnv-mode))
 
-;; Dired
 
-(setq dired-dwim-target t) ; Copy to other dired buffer if exists
-(add-hook 'dired-mode-hook 'dired-omit-mode)
-(require 'dired-x)
-(setq-default dired-omit-files-p t) ; Buffer-local variable
-(setq dired-omit-files (concat dired-omit-files "\\|^\\..+$"))
-(fset 'yes-or-no-p 'y-or-n-p) ; Ask for y/n instead of yes/no
-(global-set-key (kbd "C-x C-j") 'dired-jump)
+(use-package dired
+  :straight (:type built-in)
+  :bind ("C-x C-j" . dired-jump)
+  :hook (dired-mode . dired-omit-mode)
+  :config
+  (setq dired-dwim-target t) ; Copy to other dired buffer if exists
+  (require 'dired-x)
+  (setq-default dired-omit-files-p t) ; Buffer-local variable
+  (setq dired-omit-files (concat dired-omit-files "\\|^\\..+$"))
+  (fset 'yes-or-no-p 'y-or-n-p)) ; Ask for y/n instead of yes/no
 
 ;; Ivy, counsel, swiper
 
 (use-package ivy
-             :diminish
-             :config
-             (use-package ivy-prescient
-                          :config
-                          (ivy-prescient-mode)
-                          (prescient-persist-mode)
-                          (ivy-mode))
-             (setq ivy-use-selectable-prompt t)
-             (setf (alist-get 'counsel-rg ivy-re-builders-alist) #'ivy--regex-plus))
+  :diminish
+  :config
+  (setq ivy-use-selectable-prompt t))
+
+(use-package ivy-prescient
+  :config
+  :after (ivy counsel)
+  (ivy-prescient-mode)
+  (prescient-persist-mode)
+  (ivy-mode))
 
 (use-package counsel
-             :bind (("C-c f" . counsel-recentf)
-                    ("C-c s" . counsel-rg)
-                    ("C-c g" . counsel-git)
-                    ("C-c u" . counsel-unicode-char))
-             :config
-             (setq counsel-rg-base-command
-                   "rg -i -M 120 --no-heading --line-number --color never %s ."))
+  :bind (("C-c f" . counsel-recentf)
+         ("C-c s" . counsel-rg)
+         ("C-c g" . counsel-git)
+         ("C-c u" . counsel-unicode-char)
+         ("C-x b" . counsel-switch-buffer)
+         ("M-x" . counsel-M-x))
+  :config
+  (setq counsel-rg-base-command
+        "rg -i -M 120 --no-heading --line-number --color never %s .")
+  (setf (alist-get 'counsel-rg ivy-re-builders-alist) #'ivy--regex-plus))
 
 (use-package swiper
-             :bind ("C-s" . swiper))
+  :bind ("C-s" . swiper))
 
 ;; Org mode
+
+(global-set-key (kbd "C-c c") 'org-capture)
+(global-set-key (kbd "C-c a") 'org-agenda)
 
 (setq org-fontify-whole-heading-line nil)
 
@@ -185,29 +213,26 @@
 (setq org-stuck-projects
       '("+PROJECT/-TODO" ("TODO")))
 
-(global-set-key (kbd "C-c c") 'org-capture)
-(global-set-key (kbd "C-c a") 'org-agenda)
-
 ;;
 
 (use-package which-key
-             :diminish
-             :config
-             (which-key-mode))
+  :diminish
+  :config
+  (which-key-mode))
 
 (use-package default-text-scale
-             :config
-             (default-text-scale-mode))
+  :config
+  (default-text-scale-mode))
 
 (use-package restclient
-             :mode "\\.http\\'")
+  :mode ("\\.http\\'" . restclient-mode))
 
 (use-package magit
-             :bind ("C-x g" . magit-status))
+  :bind ("C-x g" . magit-status))
 
 (use-package expand-region
-             :bind (("C-=" . er/expand-region)
-                    ("C--" . er/contract-region)))
+  :bind (("C-=" . er/expand-region)
+         ("C--" . er/contract-region)))
 
 (use-package markdown-mode)
 
@@ -216,37 +241,33 @@
 (use-package yaml-mode)
 
 (use-package company
-             :diminish
-             :config
-             (global-company-mode))
+  :diminish
+  :config
+  (global-company-mode))
 
 (use-package company-prescient
-             :config
-             (company-prescient-mode))
+  :after company
+  :config
+  (company-prescient-mode))
 
 (use-package flycheck
-             :diminish
-                     ;                   :hook prog-mode
-             )
-
-(add-hook 'haskell-mode-hook 'flycheck-mode)
-
-
-(add-hook 'flycheck-mode-hook
-          (lambda ()
-            (local-set-key (kbd "M-p") #'flycheck-previous-error)
-            (local-set-key (kbd "M-n") #'flycheck-next-error)))
+  :diminish
+  :bind (:map flycheck-mode-map
+         ("M-p" . flycheck-previous-error)
+         ("M-n" . flycheck-next-error)))
 
 (use-package wgrep)
 
 (use-package yasnippet
-             :diminish yas-minor-mode
-             :config
-             (yas-global-mode))
+  :diminish yas-minor-mode
+  :config
+  (yas-global-mode))
 
-;; I don't like when the text jumps around because the snippet fields have a border
-;; in the leuven theme, therefore disable it (overwriting the [[https://github.com/fniessen/emacs-leuven-theme/blob/24cad6f573833c987f5b4ef48c4230e37023e8e9/leuven-theme.el#L1010][original definition]]).
-
+;; I don't like when the text jumps around because the snippet
+;; fields have a border in the leuven theme, therefore disable it
+;; (overwriting https://github.com/fniessen/emacs-leuven-theme/blob/24cad6f573833c987f5b4ef48c4230e37023e8e9/leuven-theme.el#L1010).
+;;
+;; FIXME: This is currently broken
 (let ((class '((class color) (min-colors 89))))
   (custom-theme-set-faces
    'leuven
@@ -256,34 +277,31 @@
 
 (use-package lsp-mode
   :commands lsp
-  :config (require 'lsp-clients))
+  :config
+  (require 'lsp-clients))
 
 (use-package lsp-ui)
 
 ;; Haskell
 
-(use-package haskell-mode)
+(use-package haskell-mode
+  :bind (:map haskell-mode-map
+         ("M-s" . haskell-mode-stylish-buffer))
+  :hook ((haskell-mode . flycheck-mode)
+         (haskell-mode . dante-mode)
+         (haskell-mode . haskell-auto-insert-module-template)))
 
-(use-package dante)
-
-(add-hook 'haskell-mode-hook 'dante-mode)
-(add-hook 'haskell-mode-hook 'haskell-auto-insert-module-template)
-(add-hook 'haskell-mode-hook
-          (lambda ()
-            (local-set-key (kbd "M-s") #'haskell-mode-stylish-buffer)))
-
-(put 'dante-target 'safe-local-variable 'stringp)
-
-(setq dante-repl-command-line
-      '("cabal"
-        "new-repl"
-        dante-target
-        "--disable-optimization"
-        "--builddir=dist-newstyle/dante"))
-
-(add-hook 'dante-mode-hook
-   '(lambda () (flycheck-add-next-checker 'haskell-dante
-                                          '(info . haskell-hlint))))
+(use-package dante
+  :hook (dante-mode . (lambda () (flycheck-add-next-checker 'haskell-dante
+                                                            '(info . haskell-hlint))))
+  :config
+  (put 'dante-target 'safe-local-variable 'stringp)
+  (setq dante-repl-command-line
+        '("cabal"
+          "repl"
+          dante-target
+          "--disable-optimization"
+          "--builddir=dist-newstyle/dante")))
 
 ;; These functions run the current line through the =ppsh= executable (part of
 ;; [[https://hackage.haskell.org/package/pretty-show][pretty-show]]) and renders it as a nicely formatted and syntax highlighted haskell
@@ -314,16 +332,16 @@
   :hook (rust-mode . lsp))
 
 (use-package flycheck-rust
-  :config (add-hook 'flycheck-mode-hook #'flycheck-rust-setup))
+  :hook (flycheck-mode . flycheck-rust-setup))
 
 (use-package cargo
   :hook (rust-mode . cargo-minor-mode))
 
 ;; Kotlin
 
-(use-package kotlin-mode)
-
-(setq kotlin-tab-width 4)
+(use-package kotlin-mode
+  :config
+  (setq kotlin-tab-width 4))
 
 ;; Nix
 
