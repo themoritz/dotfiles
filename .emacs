@@ -29,6 +29,10 @@
 ;;
 
 (when (eq system-type 'darwin)
+  ;; Avoid "Listing directory failed but 'access-file' worked" error in
+  ;; dired for some directories.
+  (require 'ls-lisp)
+  (setq ls-lisp-use-insert-directory-program nil)
   (use-package exec-path-from-shell
     :config
     (exec-path-from-shell-initialize)))
@@ -48,6 +52,7 @@
 
 (setq inhibit-splash-screen t)
 (setq ring-bell-function 'ignore)
+(global-so-long-mode 1)
 
 (tool-bar-mode -1)
 (scroll-bar-mode -1)
@@ -124,12 +129,14 @@
 
 (use-package ivy
   :diminish
+  :demand
   :config
   (setq ivy-use-selectable-prompt t))
 
 (use-package ivy-prescient
-  :config
   :after (ivy counsel)
+  :demand
+  :config
   (ivy-prescient-mode)
   (prescient-persist-mode)
   (ivy-mode))
@@ -138,15 +145,16 @@
   :bind (("C-c f" . counsel-recentf)
          ("C-c s" . counsel-rg)
          ("C-c g" . counsel-git)
-         ("C-c u" . counsel-unicode-char)
-         ("C-x b" . counsel-switch-buffer)
-         ("M-x" . counsel-M-x))
+         ("C-c u" . counsel-unicode-char))
+  :demand
   :config
   (setq counsel-rg-base-command
         "rg -i -M 120 --no-heading --line-number --color never %s .")
-  (setf (alist-get 'counsel-rg ivy-re-builders-alist) #'ivy--regex-plus))
+  (setf (alist-get 'counsel-rg ivy-re-builders-alist) #'ivy--regex-plus)
+  (counsel-mode))
 
 (use-package swiper
+  :demand
   :bind ("C-s" . swiper))
 
 ;; Org mode
