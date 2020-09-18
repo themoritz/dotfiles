@@ -355,6 +355,15 @@
 
 (use-package nix-mode)
 
+;; Groovy
+
+(use-package groovy-mode
+  :mode ("Jenkinsfile" . groovy-mode))
+
+;; Docker
+
+(use-package dockerfile-mode)
+
 ;; Indentation
 
 (setq tab-width 2)
