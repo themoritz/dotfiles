@@ -515,38 +515,6 @@ snippet. Useful when used in conjunction with =dante-eval-block= (=C-c "=).
 
 * Target Specific
 
-#+BEGIN_SRC emacs-lisp
-  (defun get-last-rev (repo ref)
-    (interactive (list (read-string "Repo: ")
-                       (read-string "Branch: ")))
-    (insert (string-trim-right
-             (shell-command-to-string (format "github-query last-rev RedOptHaskell %s %s" repo ref)))))
-
-  (global-set-key (kbd "C-c C-l r") 'get-last-rev)
-
-  (defun get-last-release-tag (repo)
-    (interactive (list (read-string "Repo: ")))
-    (insert (string-trim-right
-             (shell-command-to-string (format "github-query last-release-tag RedOptHaskell %s" repo)))))
-
-  (global-set-key (kbd "C-c C-l t") 'get-last-release-tag)
-#+END_SRC
-
-Make writing =.org= files more pleasant:
-
-#+BEGIN_SRC emacs-lisp
-  (defun org-jira (ticket)
-    (interactive (list (read-string "Ticket: ")))
-    (insert (concat "[[https://jira.target.com/browse/" ticket "][" ticket "]]")))
-
-  (defun org-github-pr (repo pr)
-    (interactive (list (read-string "Repo: ")
-                       (read-string "PR: ")))
-    (insert (concat "[[https://git.target.com/RedOptHaskell/" repo "/pull/" pr "][" repo "#" pr "]]")))
-
-  (setenv "TGT_NIX_ALLOW_UNTAGGED_DEPS" "1")
-#+END_SRC
-
 Use nix-mode for our elab files (best approximation).
 
 #+BEGIN_SRC emacs-lisp
