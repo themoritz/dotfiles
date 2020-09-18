@@ -142,6 +142,7 @@
   (ivy-mode))
 
 (use-package counsel
+  :diminish
   :bind (("C-c f" . counsel-recentf)
          ("C-c s" . counsel-rg)
          ("C-c g" . counsel-git)
@@ -288,7 +289,7 @@
   :config
   (require 'lsp-clients))
 
-(use-package lsp-ui)
+;; (use-package lsp-ui)
 
 ;; Haskell
 
@@ -337,7 +338,9 @@
 ;; Rust
 
 (use-package rust-mode
-  :hook (rust-mode . lsp))
+  :hook (rust-mode . lsp)
+  :config
+  (setq lsp-rust-server 'rust-analyzer))
 
 (use-package flycheck-rust
   :hook (flycheck-mode . flycheck-rust-setup))
