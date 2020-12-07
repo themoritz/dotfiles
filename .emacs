@@ -20,6 +20,8 @@
 
 (straight-use-package 'use-package)
 
+(global-auto-revert-mode :t)
+
 ;;
 
 (use-package diminish
@@ -52,7 +54,7 @@
 
 (setq inhibit-splash-screen t)
 (setq ring-bell-function 'ignore)
-(global-so-long-mode 1)
+;;(global-so-long-mode 1)
 
 (tool-bar-mode -1)
 (scroll-bar-mode -1)
@@ -285,9 +287,7 @@
 ;; LSP
 
 (use-package lsp-mode
-  :commands lsp
-  :config
-  (require 'lsp-clients))
+  :commands lsp)
 
 ;; (use-package lsp-ui)
 
