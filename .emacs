@@ -1,5 +1,4 @@
 (setq vc-follow-symlinks t)
-;; (org-babel-load-file "~/.emacs.d/init.org")
 
 ;; Bootstrap straight.el (taken from getting started instructions)
 
@@ -54,7 +53,6 @@
 
 (setq inhibit-splash-screen t)
 (setq ring-bell-function 'ignore)
-;;(global-so-long-mode 1)
 
 (tool-bar-mode -1)
 (scroll-bar-mode -1)
@@ -114,7 +112,6 @@
   (setq direnv-show-paths-in-summary nil)
   (setq direnv-always-show-summary nil)
   (direnv-mode))
-
 
 (use-package dired
   :straight (:type built-in)
