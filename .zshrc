@@ -25,6 +25,7 @@ setopt hist_verify            # show command with history expansion to user befo
 setopt inc_append_history     # add commands to HISTFILE in order of execution
 setopt share_history          # share command history data
 
+export FZF_CTRL_R_OPTS='--bind="ctrl-k:execute-silent(hist d `echo {} | awk '"'"'{print $1}'"'"'`)"'
 source $(fzf-share)/key-bindings.zsh
 source $(fzf-share)/completion.zsh
 

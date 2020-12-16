@@ -7,3 +7,4 @@ spwhitt/nix-zsh-completions
 rupa/z
 zsh-users/zsh-completions
 themoritz/lambda-gitster
+marlonrichert/zsh-hist

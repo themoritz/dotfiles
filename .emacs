@@ -100,6 +100,8 @@
 
 ;;
 
+(use-package string-inflection)
+
 (use-package undo-tree
   :diminish
   :init
