@@ -15,6 +15,7 @@
     ~/.emacs.d/snippets: .emacs.d/snippets
     ~/.emacs.d/lisp: .emacs.d/lisp
     ~/.local/bin/hist: .local/bin/hist
+    ~/.config/starship.toml: starship.toml
 
 - shell:
     - nix-env -i antibody
