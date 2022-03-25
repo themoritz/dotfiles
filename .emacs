@@ -45,7 +45,7 @@
   (load-theme 'leuven t))
 
 (set-face-attribute 'default nil :height 140)
-(set-face-attribute 'default nil :font "Iosevka")
+(set-face-attribute 'default nil :font "Iosevka Term Curly")
 
 (show-paren-mode t)
 
@@ -365,6 +365,15 @@
 ;; Docker
 
 (use-package dockerfile-mode)
+
+;; Ledger
+
+(use-package ledger-mode)
+
+;; Beancount
+
+(straight-use-package
+  '(beancount-mode :type git :host github :repo "beancount/beancount-mode"))
 
 ;; Indentation
 

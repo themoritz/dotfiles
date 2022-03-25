@@ -2,6 +2,7 @@ format = """
 $character\
 $cmd_duration\
 $nix_shell\
+$python\
 $directory\
 $git_branch\
 $git_commit\
