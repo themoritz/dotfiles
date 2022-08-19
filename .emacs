@@ -45,7 +45,7 @@
   (load-theme 'leuven t))
 
 (set-face-attribute 'default nil :height 140)
-(set-face-attribute 'default nil :font "Iosevka Term Curly")
+(set-face-attribute 'default nil :font "Iosevka Term")
 
 (show-paren-mode t)
 
@@ -186,7 +186,7 @@
 (setq org-refile-targets
       '((org-agenda-files :maxlevel . 9)
         (nil :maxlevel . 9)))
-(setq org-refile-use-outline-path file)
+; (setq org-refile-use-outline-path file)
 (setq org-outline-path-complete-in-steps nil)
 
 (defun md/open-index-file ()

@@ -6,6 +6,8 @@ source ~/.zsh/plugins.sh
 # source <(antibody init)
 # antibody bundle < ~/.zsh/plugins.txt
 
+eval "$(/opt/homebrew/bin/brew shellenv)"
+
 FZF_DEFAULT_OPTS='--color light'
 
 ## History file configuration
@@ -26,7 +28,13 @@ setopt inc_append_history     # add commands to HISTFILE in order of execution
 setopt share_history          # share command history data
 
 export FZF_CTRL_R_OPTS='--bind="ctrl-k:execute-silent(hist d `echo {} | awk '"'"'{print $1}'"'"'`)"'
-source $(fzf-share)/key-bindings.zsh
-source $(fzf-share)/completion.zsh
+
+# fzf key bindings and completions
+[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+
+# With Nix:
+# source $(fzf-share)/key-bindings.zsh
+# source $(fzf-share)/completion.zsh
 
 eval "$(direnv hook zsh)"
+eval "$(starship init zsh)"
