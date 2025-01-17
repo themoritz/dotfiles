@@ -1,0 +1,7 @@
+theme = "light:Adwaita,dark:Adwaita Dark"
+font-family = "Iosevka Term"
+font-size = 14
+font-thicken
+cursor-style = block
+cursor-style-blink = false
+shell-integration-features = no-cursor

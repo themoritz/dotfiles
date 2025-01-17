@@ -16,6 +16,9 @@
     ~/.emacs.d/lisp: .emacs.d/lisp
     ~/.local/bin/hist: .local/bin/hist
     ~/.config/starship.toml: starship.toml
+    ~/.config/ghostty/config: ./ghostty/config
+    ~/.config/zed/keymap.json: ./zed/keymap.json
+    ~/.config/zed/settings.json: ./zed/settings.json
 
 - shell:
     - nix-env -i antibody

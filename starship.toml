@@ -12,7 +12,7 @@ $git_status"""
 add_newline = false
 
 [directory]
-style = "bold black"
+style = "bold"
 
 [git_branch]
 style = "bold cyan"

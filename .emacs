@@ -153,6 +153,8 @@
   (setq counsel-rg-base-command
         "rg -i -M 120 --no-heading --line-number --color never %s .")
   (setf (alist-get 'counsel-rg ivy-re-builders-alist) #'ivy--regex-plus)
+  (recentf-mode 1)
+  (run-at-time nil (* 5 60) 'recentf-save-list)
   (counsel-mode))
 
 (use-package swiper
@@ -285,10 +287,15 @@
 
 ;; LSP
 
-(use-package lsp-mode
-  :commands lsp)
+;(use-package lsp-mode
+;  :commands lsp)
 
 ;; (use-package lsp-ui)
+
+;; Eglot
+
+(add-hook 'eglot-managed-mode-hook (lambda () (eglot-inlay-hints-mode -1)))
+(setq-default eldoc-echo-area-use-multiline-p 5)
 
 ;; Haskell
 
@@ -337,12 +344,10 @@
 ;; Rust
 
 (use-package rust-mode
-  :hook (rust-mode . lsp)
-  :config
-  (setq lsp-rust-server 'rust-analyzer))
+  :hook (rust-mode . eglot-ensure))
 
-(use-package flycheck-rust
-  :hook (flycheck-mode . flycheck-rust-setup))
+;(use-package flycheck-rust
+;  :hook (flycheck-mode . flycheck-rust-setup))
 
 (use-package cargo
   :hook (rust-mode . cargo-minor-mode))
@@ -381,7 +386,3 @@
 (setq c-basic-offset 2)
 (setq-default indent-tabs-mode nil)
 (setq js-indent-level 2)
-
-;; Target stuff
-
-(setenv "TGT_NIX_ALLOW_UNTAGGED_DEPS" "1")

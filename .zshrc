@@ -2,11 +2,19 @@
 # antibody bundle < ~/.zsh/plugins.txt > ~/.zsh/plugins.sh
 source ~/.zsh/plugins.sh
 
+# Nix
+if [ -e '/nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh' ]; then
+  . '/nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh'
+fi
+# End Nix
+
 # For quick iteration:
 # source <(antibody init)
 # antibody bundle < ~/.zsh/plugins.txt
 
 eval "$(/opt/homebrew/bin/brew shellenv)"
+# eval "$(/usr/local/bin/brew shellenv)"
+alias ibrew='arch -x86_64 /usr/local/bin/brew'
 
 FZF_DEFAULT_OPTS='--color light'
 
@@ -36,5 +44,17 @@ export FZF_CTRL_R_OPTS='--bind="ctrl-k:execute-silent(hist d `echo {} | awk '"'"
 # source $(fzf-share)/key-bindings.zsh
 # source $(fzf-share)/completion.zsh
 
+export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+export NODE_VERSIONS="$NVM_DIR/versions/node"
+
 eval "$(direnv hook zsh)"
 eval "$(starship init zsh)"
+source "$HOME/.cargo/env"
+
+[ -f "/Users/moritz/.ghcup/env" ] && . "/Users/moritz/.ghcup/env" # ghcup-env
+
+export PATH=$PATH:$(go env GOPATH)/bin
+
+export PATH="/Users/moritz/.local/bin:$PATH"
