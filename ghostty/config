@@ -1,4 +1,4 @@
-theme = "light:Adwaita,dark:Adwaita Dark"
+theme = "light:tokyonight-day,dark:tokyonight"
 font-family = "Iosevka Term"
 font-size = 14
 font-thicken

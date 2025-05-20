@@ -15,6 +15,7 @@ mkdir -p ~/.config
 cd ~/.config
 ln -s ../dotfiles/.config/i3/ .
 ln -s ../dotfiles/.config/i3status/ .
+ln -s ../dotfiles/.config/nvim .
 
 mkdir -p ~/.stack
 cd ~/.stack

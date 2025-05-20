@@ -2,7 +2,7 @@
 	name = Moritz Drexl
 	email = mdrexl@fastmail.fm
 [credential]
-	helper = cache --timeout=3600
+	helper = store
 [core]
 	editor = /run/current-system/sw/bin/vim
 [puh]

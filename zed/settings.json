@@ -12,8 +12,8 @@
   },
   "assistant": {
     "default_model": {
-      "provider": "openai",
-      "model": "gpt-4o"
+      "provider": "zed.dev",
+      "model": "claude-3-7-sonnet-latest"
     },
     "version": "2"
   },
@@ -41,8 +41,8 @@
   "base_keymap": "VSCode",
   "theme": {
     "mode": "system",
-    "light": "macOS Classic Light",
-    "dark": "macOS Classic Dark"
+    "light": "Advaita Pastel Light",
+    "dark": "Adwaita Pastel Dark"
   },
   "buffer_font_size": 14,
   "buffer_font_family": "Iosevka Term",
@@ -50,6 +50,9 @@
     "inline_blame": {
       "enabled": false
     }
+  },
+  "gutter": {
+    "line_numbers": false
   },
   "format_on_save": "off",
   "current_line_highlight": "gutter"
