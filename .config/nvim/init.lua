@@ -20,4 +20,6 @@ require 'keymaps'
 
 -- Configure plugins
 local plugins = 'plugins'
-require('lazy').setup(plugins, {})
+require('lazy').setup(plugins, {
+  change_detection = { notify = false },
+})
