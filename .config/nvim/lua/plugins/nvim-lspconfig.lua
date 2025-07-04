@@ -195,9 +195,10 @@ return {
     --        For example, to see the options for `lua_ls`, you could go to: https://luals.github.io/wiki/settings/
     local servers = {
       -- clangd = {},
-      -- gopls = {},
+      gopls = {},
       -- pyright = {},
       rust_analyzer = {},
+      emmet_ls = {},
       zls = {},
       -- ... etc. See `:help lspconfig-all` for a list of all the pre-configured LSPs
       --
@@ -206,6 +207,8 @@ return {
       --
       -- But for many setups, the LSP (`ts_ls`) will work just fine
       ts_ls = {},
+      -- htmx = {},
+      html = {},
       --
 
       lua_ls = {
@@ -223,6 +226,23 @@ return {
         },
       },
     }
+
+    -- Log location: ~/.local/state/nvim/lsp.log
+    -- vim.lsp.log.set_level 'info'
+
+    local lspconfig = require 'lspconfig'
+    require('lspconfig.configs').zigcount = {
+      default_config = {
+        cmd = {
+          'bash',
+          '-c',
+          '/Users/moritz/code/zigcount/zig-out/bin/zigcount --lsp 2> >(tee zigcount.log >&2)',
+        },
+        filetypes = { 'beancount', 'bean' },
+        root_dir = require('lspconfig.util').root_pattern 'zigcount.config',
+      },
+    }
+    lspconfig.zigcount.setup {}
 
     -- Ensure the servers and tools above are installed
     --

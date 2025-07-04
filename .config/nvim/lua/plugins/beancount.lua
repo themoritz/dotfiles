@@ -1,4 +1,5 @@
-return {
-  'nathangrigg/vim-beancount',
-  lazy = false,
-}
+-- return {
+--   'nathangrigg/vim-beancount',
+--   lazy = false,
+-- }
+return {}

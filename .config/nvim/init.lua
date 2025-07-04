@@ -23,3 +23,11 @@ local plugins = 'plugins'
 require('lazy').setup(plugins, {
   change_detection = { notify = false },
 })
+
+vim.api.nvim_create_autocmd({ 'BufNewFile', 'BufRead' }, {
+  pattern = { '*.bean', '*.beancount' },
+  callback = function()
+    vim.bo.filetype = 'beancount'
+  end,
+  group = vim.api.nvim_create_augroup('beancount', { clear = true }),
+})
