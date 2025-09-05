@@ -18,6 +18,16 @@ alias ibrew='arch -x86_64 /usr/local/bin/brew'
 
 FZF_DEFAULT_OPTS='--color light'
 
+## Completion
+autoload -Uz compinit
+compinit
+
+# Enable menu selection for interactive completion lists
+zstyle ':completion:*' menu select
+
+# Enable colored completions matching LS_COLORS (for ls-like coloring)
+zstyle ':completion:*:default' list-colors "${(s.:.)LS_COLORS}"
+
 ## History file configuration
 [ -z "$HISTFILE" ] && HISTFILE="$HOME/.zsh_history"
 HISTSIZE=50000
@@ -58,3 +68,12 @@ source "$HOME/.cargo/env"
 export PATH=$PATH:$(go env GOPATH)/bin
 
 export PATH="/Users/moritz/.local/bin:$PATH"
+export PATH="/Users/moritz/.local/bin/zig:$PATH"
+
+alias vim="nvim"
+alias lg="lazygit"
+alias pip="uv pip"
+
+
+printf '\33c\e[3J'
+

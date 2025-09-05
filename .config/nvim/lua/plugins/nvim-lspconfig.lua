@@ -200,6 +200,13 @@ return {
       rust_analyzer = {},
       emmet_ls = {},
       zls = {},
+      -- zls = {
+      --   settings = {
+      --     zls = {
+      --       enable_build_on_save = true,
+      --     },
+      --   },
+      -- },
       -- ... etc. See `:help lspconfig-all` for a list of all the pre-configured LSPs
       --
       -- Some languages (like typescript) have entire language plugins that can be useful:
@@ -207,8 +214,8 @@ return {
       --
       -- But for many setups, the LSP (`ts_ls`) will work just fine
       ts_ls = {},
-      -- htmx = {},
       html = {},
+      elixirls = {},
       --
 
       lua_ls = {
@@ -243,6 +250,15 @@ return {
       },
     }
     lspconfig.zigcount.setup {}
+
+    -- lspconfig.zls.setup {
+    --   settings = {
+    --     zls = {
+    --       enable_build_on_save = true,
+    --       build_on_save_args = { 'build' },
+    --     },
+    --   },
+    -- }
 
     -- Ensure the servers and tools above are installed
     --
